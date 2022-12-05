@@ -5,7 +5,7 @@
 
 ## Planning
 
-**Description**:
+**Description**: A small robot controlled by a Rasberry Pi will be lifted into the air by helium balloons. As it rises, it will collect altitude data and send messages to a phone that vary based on the detected altitude. Once it reaches a certain altitude, the ballons will drop the robot, which will then enter a state of freefall, safely landing on the ground.
 
 **Test of Success**: The pi will consistently collect altitude data and send it back with vthe cor`rect message. It will also drop at the correct altitude and land safely/survive.
 
@@ -43,8 +43,25 @@
 
 ### Parts and Uses
 
-| Part | Use |
-| ---- | --- |
+| Part                 | Use |
+| -------------------- | --- |
+| Rasberry Pi Pico     |     |
+| Altimeter            |     |
+| Foam Padding         |     |
+| Helium Balloons      |     |
+| #4/40 Nuts and Bolts |     |
+| Acrylic              |     |
+| PLA                  |     |
+| LoRa Radio           |     |
+| Phone                |     |
+| Wires                |     |
+| Servos               |     |
+| Resistors            |     |
+| Switches             |     |
+| LEDs                 |     |
+| String               |     |
+| Powerboost           |     |
+| Battery              |     |
 
 ### Safety
 
