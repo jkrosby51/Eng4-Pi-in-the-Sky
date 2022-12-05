@@ -65,7 +65,10 @@
 
 ### Safety
 
--
+- Maintain an open launch/landing area without people or obstacles
+- A way to control or limit the horizontal movement during the launch
+- Safety equipment during launch
+- Safe storage of helium
 
 ### Images
 
