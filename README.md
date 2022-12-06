@@ -75,7 +75,8 @@
 ### Pseudocode
 
 **Code Block Diagram**
-![code block diagram](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/tree/main/images/Engi4.pi-in-the-sky.code-diagram.png)
+
+![code block diagram](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/Engi4.pi-in-the-sky.code-diagram.png)
 
 ## About Us
 
