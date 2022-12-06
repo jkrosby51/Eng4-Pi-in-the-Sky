@@ -72,7 +72,9 @@
 
 ### Images
 
-### Pseudocode
+**Task Breakdown**
+
+![task breakdown](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/maintaskbreakdown.png)
 
 **Code Block Diagram**
 
