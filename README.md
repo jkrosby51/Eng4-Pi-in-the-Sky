@@ -80,6 +80,10 @@
 
 ![code block diagram](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/Engi4.pi-in-the-sky.code-diagram.png)
 
+## Research/Important Information
+
+- https://www.omnicalculator.com/everyday-life/helium-balloons
+
 ## About Us
 
 ### **Josie Muss**
