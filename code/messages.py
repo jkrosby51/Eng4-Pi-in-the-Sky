@@ -21,3 +21,5 @@ if altitude < value1 and altitude > value2 and message1[1] == "n":
     print message1[0]
     message1[1] = "y"
 '''
+
+#msg11 plays shortly after string cut
