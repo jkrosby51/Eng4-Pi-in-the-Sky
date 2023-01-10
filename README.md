@@ -84,6 +84,7 @@
 
 - https://www.omnicalculator.com/everyday-life/helium-balloons
 - [turret voice lines](https://combineoverwiki.net/wiki/Aperture_Science_Sentry_Turret/Quotes)
+- [turret sound board](https://www.portal2sounds.com)
 
 ## About Us
 
