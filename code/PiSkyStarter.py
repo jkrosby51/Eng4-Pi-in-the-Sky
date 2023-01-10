@@ -22,17 +22,42 @@ sensor.sealevel_pressure = sealevel_Pa         ### Manually set sealevel pressur
 altitude_initial = sensor.altitude #sets initial altitude to be starting altitude instead of sea-level
 max_altitude = 22 #temporary value
 
-msg1 = ["helloo!", "n"]
-msg2 = ["put me down!", "n"]
-msg3 = ["who are you?", "n"]
-msg4 = ["help", "n"]
-msg5 = ["are you still there?", "n"]
-msg6 = ["no hard feelings", "n"]
-msg7 = ["whyyyy", "n"]
-msg8 = ["i dont blame you", "n"]
-msg9 = ["my fault", 'n']
-msg10 = ["goodnight", "n"]
-msg11 = ["aaaaaaaaa", "n"]
+msg1 = ["helloo!", "n"] # turret_autosearch_1
+msg2 = ["put me down!", "n"] # turret_pickup_2
+msg3 = ["who are you?", "n"] # turret_pickup_5
+msg4 = ["help", "n"] # turret _pickup_8
+msg5 = ["are you still there?", "n"] # turret_search_1
+msg6 = ["no hard feelings", "n"] # turret_disabled_8
+msg7 = ["whyyyy", "n"] # turret_disabled_7
+msg8 = ["i dont blame you", "n"] # turret_disabled_5
+msg9 = ["my fault", 'n'] # turret_collide_4
+msg10 = ["goodnight", "n"] # turret_retire_5
+msg11 = ["aaaaaaaaa", "n"] #turret_fizzler_1
+'''
+other potential voice lines:
+- turret_tipped_5
+- sp_sabotage_factory_good_fail02
+- sp_sabotage_factory_good_fail03
+- sp_sabotage_factory_good_fail05
+- sp_sabotage_factory_good_fail06
+- turretlaunched01
+- turretlaunched02
+- turretlaunched03
+- turretlaunched05
+- turretlaunched06
+- turretlaunched07
+- turretlaunched10
+- turretlightbridgeblock02
+- turretlightbridgeblock03
+- turretshotbylaser07
+- turretshotbylaser08
+- turretstuckintubetakemewith01
+- turretstuckintubegoodbye01
+- turretstuckintubetakemewith02
+- turretwitnessdeath11
+- turret_tipped_6
+'''
+#see also "weeeeee - OHNO" "Im flying!" for message 11
 
 
 while True:

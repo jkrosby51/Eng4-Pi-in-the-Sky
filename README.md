@@ -86,6 +86,8 @@
 - [turret voice lines](https://combineoverwiki.net/wiki/Aperture_Science_Sentry_Turret/Quotes)
 - [turret sound board](https://www.portal2sounds.com)
 - [more turret audios](https://github.com/sourcesounds/portal/tree/master/sound/npc/turret_floor)
+- [even more turret audios](https://github.com/sourcesounds/portal2/tree/master/sound/npc/turret)
+- [still more turret audios](https://github.com/sourcesounds/portal2/tree/master/sound/npc/turret_floor)
 
 ## About Us
 
