@@ -18,7 +18,7 @@ sensor = adafruit_mpl3115a2.MPL3115A2(i2c)
 
 
 sealevel_Pa = 102290                           ### Find current sea level kPa in Charlottesville here: https://barometricpressure.app/results?lat=38.0386569&lng=-78.4846401
-sensor.sealevel_pressure = sealevel_Pa         ### Manually set sealevel pressure (in Pascals) based on current weather data for more accuracy
+sensor.sealevel_pressure =  sealevel_Pa         ### Manually set sealevel pressure (in Pascals) based on current weather data for more accuracy
 altitude_initial = sensor.altitude #sets initial altitude to be starting altitude instead of sea-level
 max_altitude = 22 #temporary value
 
