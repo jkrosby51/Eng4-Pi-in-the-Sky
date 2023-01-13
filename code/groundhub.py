@@ -10,14 +10,15 @@ LoRa code:
     Link: https://learn.adafruit.com/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts/circuitpython-for-rfm9x-lora
 '''
 
-import board
-import digitalio
-import time
 import math
-import pwmio
-import busio
+import time
+
 import adafruit_mpl3115a2
 import adafruit_rfm9x
+import board
+import busio
+import digitalio
+import pwmio
 
 #LoRa setup
 
