@@ -57,7 +57,7 @@ sensor = adafruit_mpl3115a2.MPL3115A2(i2c)
 
 sealevel_Pa = 102290                           ### Find current sea level kPa in Charlottesville here: https://barometricpressure.app/results?lat=38.0386569&lng=-78.4846401
 sensor.sealevel_pressure =  sealevel_Pa         ### Manually set sealevel pressure (in Pascals) based on current weather data for more accuracy
-altitude_initial = sensor.altititude #sets initial altitude to be starting altitude instead of sea-level
+altitude_initial = 0 #sets initial altitude
 max_altitude = 22 #temporary value
 
 msg1 = ["helloo!", "n"] # turret_autosearch_1
@@ -141,45 +141,51 @@ while True:
         rssi = rfm9x.last_rssi
         print("Received signal strength: {0} dB".format(rssi))
 
-    print(f"Altitude: {packet} meters")
+    current_altitude = int(packet_text)
     
-    if (packet - altitude_initial) > 0 and (packet - altitude_initial) < 2 and msg1[1] == "n": #temporary altitude values
+    print(f"Altitude: {current_altitude} meters")
+    
+    
+    if altitude_initial = 0:
+        altitude_intial = current_altitude
+    
+    if (current_altitude - altitude_initial) > 0 and (current_altitude - altitude_initial) < 2 and msg1[1] == "n": #temporary altitude values
         print(msg1[0])
         msg1[1] = "y"
         
-    if (packet - altitude_initial) > 2 and (packet - altitude_initial) < 4 and msg2[1] == "n": #temporary altitude values
+    if (current_altitude - altitude_initial) > 2 and (current_altitude - altitude_initial) < 4 and msg2[1] == "n": #temporary altitude values
         print(msg2[0])
         msg2[1] = "y"
         
-    if (packet - altitude_initial) > 4 and (packet - altitude_initial) < 6 and msg3[1] == "n": #temporary altitude values
+    if (current_altitude - altitude_initial) > 4 and (current_altitude - altitude_initial) < 6 and msg3[1] == "n": #temporary altitude values
         print(msg3[0])
         msg3[1] = "y"
         
-    if (packet - altitude_initial) > 6 and (packet - altitude_initial) < 8 and msg4[1] == "n": #temporary altitude values
+    if (current_altitude - altitude_initial) > 6 and (current_altitude - altitude_initial) < 8 and msg4[1] == "n": #temporary altitude values
         print(msg4[0])
         msg4[1] = "y"
         
-    if (packet - altitude_initial) > 8 and (packet - altitude_initial) < 10 and msg5[1] == "n": #temporary altitude values
+    if (current_altitude - altitude_initial) > 8 and (current_altitude - altitude_initial) < 10 and msg5[1] == "n": #temporary altitude values
         print(msg5[0])
         msg5[1] = "y"
         
-    if (packet - altitude_initial) > 10 and (packet - altitude_initial) < 12 and msg6[1] == "n": #temporary altitude values
+    if (current_altitude - altitude_initial) > 10 and (current_altitude - altitude_initial) < 12 and msg6[1] == "n": #temporary altitude values
         print(msg6[0])
         msg6[1] = "y"
         
-    if (packet - altitude_initial) > 12 and (packet - altitude_initial) < 14 and msg7[1] == "n": #temporary altitude values
+    if (current_altitude - altitude_initial) > 12 and (current_altitude - altitude_initial) < 14 and msg7[1] == "n": #temporary altitude values
         print(msg7[0])
         msg7[1] = "y"
         
-    if (packet - altitude_initial) > 14 and (packet - altitude_initial) < 16 and msg8[1] == "n": #temporary altitude values
+    if (current_altitude - altitude_initial) > 14 and (current_altitude - altitude_initial) < 16 and msg8[1] == "n": #temporary altitude values
         print(msg8[0])
         msg8[1] = "y"
         
-    if (packet - altitude_initial) > 16 and (packet - altitude_initial) < 18 and msg9[1] == "n": #temporary altitude values
+    if (current_altitude - altitude_initial) > 16 and (current_altitude - altitude_initial) < 18 and msg9[1] == "n": #temporary altitude values
         print(msg9[0])
         msg9[1] = "y"
         
-    if (packet - altitude_initial) > 18 and (packet - altitude_initial) < 20 and msg10[1] == "n": #temporary altitude values
+    if (current_altitude - altitude_initial) > 18 and (current_altitude - altitude_initial) < 20 and msg10[1] == "n": #temporary altitude values
         print(msg10[0])
         msg10[1] = "y"
     
