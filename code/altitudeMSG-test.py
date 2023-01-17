@@ -1,11 +1,13 @@
-"""
-- Find library for sound card on circuit python
-- replace all play(#) with correct command and trigger
-"""
 
+messagePin = #array full of pins! wait- is that a real thing?
 
-
+startMeters = int(sensor.altitude)
+lastMeters = startMeters
 while True:
-    current_altitude = 0 # Will be set to correct altitude in real code
-    
-
+    currentMeters = int(sensor.altitude - startMeters)
+    if currentMeters/3 != lastMeters/3:
+        currentPin = digitalio.DigitalInOut(messagePin[currentMeters])
+        currentPin.direction = digitalio.Direction.OUTPUT
+        currentPin = True #or is it false?? idk
+        time.sleep(.5)
+        currentPin = False
