@@ -72,48 +72,6 @@ msg9 = ["my fault", 'n'] # turret_collide_4
 msg10 = ["goodnight", "n"] # turret_retire_5
 msg11 = ["aaaaaaaaa", "n"] #turret_fizzler_1
 
-'''`
-other potential voice lines:
-- turret_tipped_5
-- sp_sabotage_factory_good_fail02
-- sp_sabotage_factory_good_fail03
-- sp_sabotage_factory_good_fail05
-- sp_sabotage_factory_good_fail06
-- turretlaunched01
-- turretlaunched02
-- turretlaunched03
-- turretlaunched05
-- turretlaunched06
-- turretlaunched07
-- turretlaunched10
-- turretlightbridgeblock02
-- turretlightbridgeblock03
-- turretshotbylaser07
-- turretshotbylaser08
-- turretstuckintubetakemewith01
-- turretstuckintubegoodbye01
-- turretstuckintubetakemewith02
-- turretwitnessdeath11
-- turret_tipped_6
-- turretstuckintube09
-- turret_autosearch_1
-- turret_pickup_2
-- turret_pickup_5
-- turret_pickup_8
-- turret_search_1
-- turret_disabled_8
-- turret_disabled_7
-- turret_disabled_5
-- turret_collide_4
-- turret_retire_5
-- turret_fizzler_1
-- turretlaunched09
-- turretlaunched08
-- sp_sabotage_factory_good_fail04
-
-'''
-#see also "weeeeee - OHNO" "Im flying!" for message 11
-
 print("Waiting for packets...")
 
 while True:
