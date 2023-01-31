@@ -1,4 +1,12 @@
+#type: ignore
 
+import board
+import adafruit_mpl3115a2
+import adafruit_rfm9x
+import board
+import busio
+import digitalio
+import pwmio
 messagePin = #array full of pins! wait- is that a real thing?
 
 startMeters = int(sensor.altitude)

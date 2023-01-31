@@ -57,20 +57,9 @@ rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
 
 rfm9x.tx_power = 23
 
-altitude_initial = 0 #sets initial altitude
+lastMeters = 0 #sets last known altitude to 0
+currentMeters = 0 #sets initial current altitude to 0
 max_altitude = 22 #temporary value
-
-msg1 = ["helloo!", "n"] # turret_autosearch_1
-msg2 = ["put me down!", "n"] # turret_pickup_2
-msg3 = ["who are you?", "n"] # turret_pickup_5
-msg4 = ["help", "n"] # turret _pickup_8
-msg5 = ["are you still there?", "n"] # turret_search_1
-msg6 = ["no hard feelings", "n"] # turret_disabled_8
-msg7 = ["whyyyy", "n"] # turret_disabled_7
-msg8 = ["i dont blame you", "n"] # turret_disabled_5
-msg9 = ["my fault", 'n'] # turret_collide_4
-msg10 = ["goodnight", "n"] # turret_retire_5
-msg11 = ["aaaaaaaaa", "n"] #turret_fizzler_1
 
 max_area = 100  
 mid_x = 64 #x-coordinate of center of OLED screen display
@@ -78,10 +67,13 @@ mid_y = 32 #y-coordinate of center of OLED screen display
 min_distance = 10000000000
 
 start_time = time.monotonic()
-altlist = [] #creates list of altitudes
-timelist = [] #creates list of times
+altlist = [0] #creates list of altitudes
+timelist = [0] #creates list of times
+     
+messagePin = #array full of pins! wait- is that a real thing?
 
 print("Waiting for packets...")
+
 
 while True:
     packet = rfm9x.receive()
@@ -105,74 +97,21 @@ while True:
         rssi = rfm9x.last_rssi
         print("Received signal strength: {0} dB".format(rssi))
 
-    current_altitude = int(packet_text)
+    currentMeters = int(packet_text)
     
     print(f"Altitude: {current_altitude} meters")
+    if currentMeters - lastMeters >= 3:
+        currentPin = digitalio.DigitalInOut(messagePin[currentMeters])
+        currentPin.direction = digitalio.Direction.OUTPUT
+        currentPin = True #or is it false?? idk
+        time.sleep(.5)
+        currentPin = False
+        altlist.append(currentMeters)
+        timelist.append(time.monotonic() - start_time)
+        lastMeters = currentMeters
+        
     
-    
-    if altitude_initial = 0:
-        altitude_intial = current_altitude
-    
-    if (current_altitude - altitude_initial) > 0 and (current_altitude - altitude_initial) < 2 and msg1[1] == "n": #temporary altitude values
-        print(msg1[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg1[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 2 and (current_altitude - altitude_initial) < 4 and msg2[1] == "n": #temporary altitude values
-        print(msg2[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg2[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 4 and (current_altitude - altitude_initial) < 6 and msg3[1] == "n": #temporary altitude values
-        print(msg3[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg3[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 6 and (current_altitude - altitude_initial) < 8 and msg4[1] == "n": #temporary altitude values
-        print(msg4[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg4[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 8 and (current_altitude - altitude_initial) < 10 and msg5[1] == "n": #temporary altitude values
-        print(msg5[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg5[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 10 and (current_altitude - altitude_initial) < 12 and msg6[1] == "n": #temporary altitude values
-        print(msg6[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg6[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 12 and (current_altitude - altitude_initial) < 14 and msg7[1] == "n": #temporary altitude values
-        print(msg7[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg7[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 14 and (current_altitude - altitude_initial) < 16 and msg8[1] == "n": #temporary altitude values
-        print(msg8[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg8[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 16 and (current_altitude - altitude_initial) < 18 and msg9[1] == "n": #temporary altitude values
-        print(msg9[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg9[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 18 and (current_altitude - altitude_initial) < 20 and msg10[1] == "n": #temporary altitude values
-        print(msg10[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg10[1] = "y"
-    
+
     splash = displayio.Group() #creates display group
     
     hline = Line(0,5,128,5, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the x-axis
