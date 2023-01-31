@@ -7,7 +7,7 @@
 
 **Description**: A small robot controlled by a Rasberry Pi will be lifted into the air by helium balloons. As it rises, it will collect altitude data and send messages to a phone that vary based on the detected altitude. Once it reaches a certain altitude, the ballons will drop the robot, which will then enter a state of freefall, safely landing on the ground.
 
-**Test of Success**: The pi will consistently collect altitude data and send it back with vthe cor`rect message. It will also drop at the correct altitude and land safely/survive.
+**Test of Success**: The pi will consistently collect altitude data and send it back with the correct message. It will also drop at the correct altitude and land safely/survive.
 
 ### What We Need to Learn
 
