@@ -10,12 +10,13 @@ LoRa code:
     Link: https://learn.adafruit.com/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts/circuitpython-for-rfm9x-lora
 '''
 
+
+import board
 import math
 import time
 
 import adafruit_mpl3115a2
 import adafruit_rfm9x
-import board
 import busio
 import digitalio
 import pwmio
@@ -117,19 +118,20 @@ while True:
     splash = displayio.Group() #creates display group
     
     # var = Line(x1,y1,x2,y2, color=0xHEX)
-    hline = Line(0,5,128,5, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the x-axis
+    hline = Line(0,10,128,10, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the x-axis
     splash.append(hline) #adds to splash
         
-    vline = Line(5,64,5,0, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the y-axis
+    vline = Line(10,64,10,0, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the y-axis
     splash.append(vline) #adds to splash
 
     ### My science teacher said we have to label the axes!!!!! pls add >:(
            
-    yPixel = 5 #origin of graph
-    xPixel = 5 #origin of graph
+    yPixel = 10 #origin of graph
+    xPixel = 10 #origin of graph
     for i in range(len(timelist)-1): #is that syntax correct for range()? -------------------------CHECK
         
-        line = Line(xPixel+timelist[i], yPixel+altlist[i], xPixel+timelist[i+1], yPixel+timelist[i+1])
+        line = Line(xPixel+timelist[i], yPixel+altlist[i], xPixel+timelist[i+1], yPixel+altlist[i+1], color=0xFFFF00)
+        splash.append(line)
 
 
 
