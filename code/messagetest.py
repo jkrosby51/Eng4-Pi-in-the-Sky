@@ -69,7 +69,7 @@ min_distance = 10000000000
 start_time = time.monotonic()
 altlist = [0] #creates list of altitudes
 timelist = [0] #creates list of times
-     
+    
 messagePin = #array full of pins! wait- is that a real thing?
 
 print("Waiting for packets...")
@@ -104,22 +104,35 @@ while True:
         currentPin = digitalio.DigitalInOut(messagePin[currentMeters])
         currentPin.direction = digitalio.Direction.OUTPUT
         currentPin = True #or is it false?? idk
-        time.sleep(.5)
+        time.sleep(.2)
         currentPin = False
         altlist.append(currentMeters)
         timelist.append(time.monotonic() - start_time)
         lastMeters = currentMeters
+
+        
         
     
 
     splash = displayio.Group() #creates display group
     
+    # var = Line(x1,y1,x2,y2, color=0xHEX)
     hline = Line(0,5,128,5, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the x-axis
     splash.append(hline) #adds to splash
         
     vline = Line(5,64,5,0, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the y-axis
     splash.append(vline) #adds to splash
+
+    ### My science teacher said we have to have titles for the axes!!!!! pls add >:(
+           
+    yPixel = 5 #origin of graph
+    xPixel = 5 #origin of graph
+    for i in range(len(timelist)-1): #is that syntax correct for range()? -------------------------CHECK
         
+        line = Line(xPixel+timelist[i], yPixel+altlist[i], xPixel+timelist[i+1], yPixel+timelist[])
+
+
+
     display.show(splash) #sends display group to OLED screen
 
     time.sleep(1) #wait one second
