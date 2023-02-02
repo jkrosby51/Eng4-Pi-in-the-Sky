@@ -123,7 +123,7 @@ while True:
     vline = Line(5,64,5,0, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the y-axis
     splash.append(vline) #adds to splash
 
-    ### My science teacher said we have to have titles for the axes!!!!! pls add >:(
+    ### My science teacher said we have to label the axes!!!!! pls add >:(
            
     yPixel = 5 #origin of graph
     xPixel = 5 #origin of graph
