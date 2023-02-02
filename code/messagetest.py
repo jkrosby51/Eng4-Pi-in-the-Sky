@@ -129,7 +129,7 @@ while True:
     xPixel = 5 #origin of graph
     for i in range(len(timelist)-1): #is that syntax correct for range()? -------------------------CHECK
         
-        line = Line(xPixel+timelist[i], yPixel+altlist[i], xPixel+timelist[i+1], yPixel+timelist[])
+        line = Line(xPixel+timelist[i], yPixel+altlist[i], xPixel+timelist[i+1], yPixel+timelist[i+1])
 
 
 
