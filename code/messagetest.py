@@ -111,8 +111,6 @@ while True:
         timelist.append(time.monotonic() - start_time)
         lastMeters = currentMeters
 
-        
-        
     
 
     splash = displayio.Group() #creates display group
@@ -125,6 +123,13 @@ while True:
     splash.append(vline) #adds to splash
 
     ### My science teacher said we have to label the axes!!!!! pls add >:(
+       y_label = "alt (m)" #adds text to label y-axis to display group
+       text_area = label.Label(terminalio.FONT, text = y_label, color = 0xFFFF00, x = 5, y= 60) #sets font, text, color, and location
+       splash.append(text_area) #adds to splash
+       
+        x_label = "time (s)" #adds text to label x-axis to display group
+        text_area = label.Label(terminalio.FONT, text = x_label, color = 0xFFFF00, x = 120, y= 5) #sets font, text, color, and location
+        splash.append(text_area) #adds to splash
            
     yPixel = 10 #origin of graph
     xPixel = 10 #origin of graph
