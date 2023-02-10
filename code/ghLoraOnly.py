@@ -82,7 +82,7 @@ while True:
         # Received a packet!
         
         # Print out the raw bytes of the packet:
-        print("Received (raw bytes): {0}".format(packet)) # decodes to ASCII text and prints it
+        #print("Received (raw bytes): {0}".format(packet)) # decodes to ASCII text and prints it
         # raw bytes are always recieved, must be converted to text format like ASCII to do string processing on data. 
         # always make sure ASCII data is being sent before trying to decode
         
@@ -90,19 +90,19 @@ while True:
         print("Received (ASCII): {0}".format(packet_text)) #reads the RSSI (signal strength) of last recieved message and prints it
 
         rssi = rfm9x.last_rssi
-        print("Received signal strength: {0} dB".format(rssi))
+        #print("Received signal strength: {0} dB".format(rssi))
 
         currentMeters = int(float(packet_text))
     
         print(f"Altitude: {currentMeters} meters")
     if currentMeters - lastMeters >= 3:
         #currentPin = digitalio.DigitalInOut(messagePin[currentMeters])
-        currentPin.direction = digitalio.Direction.OUTPUT
-        currentPin = True #or is it false?? idk
+        #currentPin.direction = digitalio.Direction.OUTPUT
+        #currentPin = True #or is it false?? idk
         time.sleep(.2)
-        currentPin = False
-        altlist.append(currentMeters)
-        timelist.append(time.monotonic() - start_time)
+        #currentPin = False
+        #altlist.append(currentMeters)
+        #timelist.append(time.monotonic() - start_time)
         lastMeters = currentMeters
 
         
