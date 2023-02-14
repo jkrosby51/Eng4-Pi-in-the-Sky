@@ -1,27 +1,13 @@
-# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
-# SPDX-License-Identifier: MIT
-
-"""
-This test will initialize the display using displayio and draw a solid green
-background, a smaller purple rectangle, and some yellow text.
-
-Pinouts are for the 2.8" TFT Shield
-"""
 import board
 import terminalio
 import displayio
 from adafruit_display_text import label
+from adafruit_display_shapes.line import Line
+from adafruit_display_shapes.rect import Rect
 import adafruit_ili9341
-
-# Release any resources currently in use for the displays
-displayio.release_displays()
-
+displayio.release_displays() #set up for screen by releasing all used pins for new display
 # Use Hardware SPI
 spi = board.SPI()
-
-# Use Software SPI if you have a shield with pins 11-13 jumpered
-# import busio
-# spi = busio.SPI(board.D11, board.D13)
 
 tft_cs = board.D10
 tft_dc = board.D9
@@ -36,25 +22,38 @@ display.show(splash)
 # Draw a green background
 color_bitmap = displayio.Bitmap(320, 240, 1)
 color_palette = displayio.Palette(1)
-color_palette[0] = 0x00FF00  # Bright Green
+color_palette[0] = 0xAFAFAF  #grey
 
 bg_sprite = displayio.TileGrid(color_bitmap, pixel_shader=color_palette, x=0, y=0)
 
 splash.append(bg_sprite)
 
-# Draw a smaller inner rectangle
-inner_bitmap = displayio.Bitmap(280, 200, 1)
-inner_palette = displayio.Palette(1)
-inner_palette[0] = 0xAA0088  # Purple
-inner_sprite = displayio.TileGrid(inner_bitmap, pixel_shader=inner_palette, x=20, y=20)
-splash.append(inner_sprite)
 
-# Draw a label
-text_group = displayio.Group(scale=3, x=57, y=120)
-text = "Hello World!"
-text_area = label.Label(terminalio.FONT, text=text, color=0xFFFF00)
-text_group.append(text_area)  # Subgroup for text scaling
-splash.append(text_group)
+# Make the graph's axes
+hRect = Rect(40, 200, 240, 2, fill=0x470400)#sets start coordinates, width, height, and fill color of the line serving as the x-axis
+splash.append(hRect) #adds to splash
+
+vRect = Rect(40, 40, 2, 160, fill=0x470400) #sets start coordinates, width, height, and fill color of the line serving as the y-axis
+splash.append(vRect) #adds to splash
+
+### My science teacher said we have to label the axes!!!!! pls add >:(
+
+#label the x-axis
+text_group = displayio.Group(scale=1, x=240, y=210) #sets size and start position of message
+text = "time(s)"
+text_area = label.Label(terminalio.FONT, text=text, color=0x470400) #adds text to label x-axis to display group
+text_group.append(text_area)  #subgroup for text scaling
+splash.append(text_group) #adds to splash
+
+#label the y-axis
+text_group = displayio.Group(scale=1, x=3, y=45) #sets size and start position of message
+text = "alt(m)"
+text_area = label.Label(terminalio.FONT, text=text, color=0x470400) #adds text to label y-axis to display group
+text_group.append(text_area)  #subgroup for text scaling
+splash.append(text_group) #adds to splash
+
+yPixel = 160 #origin of graph
+xPixel = 40 #origin of graph
 
 while True:
     pass
