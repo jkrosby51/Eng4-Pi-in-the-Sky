@@ -20,23 +20,12 @@ import adafruit_rfm9x
 import busio
 import digitalio
 import pwmio
-from adafruit_display_shapes.triangle import Triangle
 from adafruit_display_shapes.line import Line
-from adafruit_display_shapes.circle import Circle
 import busio
 import displayio
 import terminalio
 import adafruit_displayio_ssd1306
 from adafruit_display_text import label
-displayio.release_displays() #set up for OLED screen
-
-sda_pin = board.GP14 #sets pin for sda
-scl_pin = board.GP15 #sets pin for scl
-i2c = busio.I2C(scl_pin, sda_pin) #sets i2c
-
-display_bus = displayio.I2CDisplay(i2c, device_address = 0x3d, reset = board.GP2) #sets up OLED screen
-display = adafruit_displayio_ssd1306.SSD1306(display_bus, width=128, height=64) #sets up OLED screen
-
 
 #LoRa setup
 
@@ -44,11 +33,11 @@ display = adafruit_displayio_ssd1306.SSD1306(display_bus, width=128, height=64) 
 RADIO_FREQ_MHZ = 915.0  # Frequency of the radio in Mhz. Must match yourm module!
 
 # Define pins connected to the chip, use these if wiring up the breakout according to the guide:
-CS = digitalio.DigitalInOut(board.GP17)
-RESET = digitalio.DigitalInOut(board.GP16)
+CS = digitalio.DigitalInOut(board.GP8)
+RESET = digitalio.DigitalInOut(board.GP9)
 
 # Initialize SPI bus.
-spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
+spi = busio.SPI(clock=board.GP2, MOSI=board.GP3, MISO=board.GP4)
 
 # Initialze RFM radio
 rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
@@ -71,7 +60,7 @@ start_time = time.monotonic()
 altlist = [0] #creates list of altitudes
 timelist = [0] #creates list of times
     
-messagePin = #array full of pins! wait- is that a real thing?
+#messagePin = #array full of pins! wait- is that a real thing?
 
 print("Waiting for packets...")
 
@@ -82,11 +71,9 @@ while True:
     # If no packet was received during the timeout then None is returned.
     if packet is None:
         # Packet has not been received
-        LED.value = False
         print("Received nothing! Listening again...")
     else:
         # Received a packet!
-        LED.value = True
         # Print out the raw bytes of the packet:
         print("Received (raw bytes): {0}".format(packet)) # decodes to ASCII text and prints it
         # raw bytes are always recieved, must be converted to text format like ASCII to do string processing on data. 
@@ -97,49 +84,58 @@ while True:
 
         rssi = rfm9x.last_rssi
         print("Received signal strength: {0} dB".format(rssi))
-
-    currentMeters = int(packet_text)
-    
-    print(f"Altitude: {current_altitude} meters")
-    if currentMeters - lastMeters >= 3:
-        currentPin = digitalio.DigitalInOut(messagePin[currentMeters])
-        currentPin.direction = digitalio.Direction.OUTPUT
-        currentPin = True #or is it false?? idk
-        time.sleep(.2)
-        currentPin = False
-        altlist.append(currentMeters)
-        timelist.append(time.monotonic() - start_time)
-        lastMeters = currentMeters
-
-    
-
-    splash = displayio.Group() #creates display group
-    
-    # var = Line(x1,y1,x2,y2, color=0xHEX)
-    hline = Line(0,10,128,10, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the x-axis
-    splash.append(hline) #adds to splash
+        print(packet_text)
+        floatMeters = float(packet_text)
+        currentMeters = int(floatMeters)
         
-    vline = Line(10,64,10,0, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the y-axis
-    splash.append(vline) #adds to splash
+        print(f"Altitude: {currentMeters} meters")
+        if currentMeters - lastMeters >= 3:
+            currentPin = digitalio.DigitalInOut(messagePin[currentMeters])
+            currentPin.direction = digitalio.Direction.OUTPUT
+            currentPin = True #or is it false?? idk
+            time.sleep(.2)
+            currentPin = False
+            altlist.append(currentMeters)
+            timelist.append(time.monotonic() - start_time)
+            lastMeters = currentMeters
+            
+        if currentMeters >= 22:
+            currentPin = digitalio.DigitalInOut(messagePin[7])
+            currentPin.direction = digitalio.Direction.OUTPUT
+            time.sleep(1.5)
+            currentPin = True #or is it false?? idk
+            time.sleep(.2)
+            currentPin = False
 
-    ### My science teacher said we have to label the axes!!!!! pls add >:(
-       y_label = "alt (m)" #adds text to label y-axis to display group
-       text_area = label.Label(terminalio.FONT, text = y_label, color = 0xFFFF00, x = 5, y= 60) #sets font, text, color, and location
-       splash.append(text_area) #adds to splash
-       
+        
+    '''
+        splash = displayio.Group() #creates display group
+        
+        # var = Line(x1,y1,x2,y2, color=0xHEX)
+        hline = Line(0,10,128,10, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the x-axis
+        splash.append(hline) #adds to splash
+            
+        vline = Line(10,64,10,0, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the y-axis
+        splash.append(vline) #adds to splash
+
+        ### My science teacher said we have to label the axes!!!!! pls add >:(
+        y_label = "alt (m)" #adds text to label y-axis to display group
+        text_area = label.Label(terminalio.FONT, text = y_label, color = 0xFFFF00, x = 5, y= 60) #sets font, text, color, and location
+        splash.append(text_area) #adds to splash
+        
         x_label = "time (s)" #adds text to label x-axis to display group
         text_area = label.Label(terminalio.FONT, text = x_label, color = 0xFFFF00, x = 120, y= 5) #sets font, text, color, and location
         splash.append(text_area) #adds to splash
-           
-    yPixel = 10 #origin of graph
-    xPixel = 10 #origin of graph
-    for i in range(len(timelist)-1): #is that syntax correct for range()? -------------------------CHECK
-        
-        line = Line(xPixel+timelist[i], yPixel+altlist[i], xPixel+timelist[i+1], yPixel+altlist[i+1], color=0xFFFF00)
-        splash.append(line)
+            
+        yPixel = 10 #origin of graph
+        xPixel = 10 #origin of graph
+        for i in range(len(timelist)-1): #is that syntax correct for range()? -------------------------CHECK
+            line = Line(xPixel+timelist[i], yPixel+altlist[i], xPixel+timelist[i+1], yPixel+altlist[i+1], color=0xFFFF00)
+            splash.append(line)
 
 
 
-    display.show(splash) #sends display group to OLED screen
+        display.show(splash) #sends display group to OLED screen
 
-    time.sleep(1) #wait one second
+        time.sleep(1) #wait one second
+    '''
