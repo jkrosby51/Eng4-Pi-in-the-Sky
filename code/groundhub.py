@@ -10,17 +10,14 @@ Author: Tony DiCola
 Link: https://learn.adafruit.com/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts/circuitpython-for-rfm9x-lora
 '''
 
-import math
 import time
 
 import adafruit_ili9341
-import adafruit_mpl3115a2
 import adafruit_rfm9x
 import board
 import busio
 import digitalio
 import displayio
-import pwmio
 import terminalio
 from adafruit_display_shapes.line import Line
 from adafruit_display_shapes.rect import Rect
