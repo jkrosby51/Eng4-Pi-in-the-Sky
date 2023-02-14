@@ -4,16 +4,16 @@
 # https://www.howtoforge.com/using-an-android-smartphone-as-a-wlan-hotspot
 '''
 LoRa code:
-    SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
-    SPDX-License-Identifier: MIT
-    Author: Tony DiCola
-    Link: https://learn.adafruit.com/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts/circuitpython-for-rfm9x-lora
+SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+SPDX-License-Identifier: MIT
+Author: Tony DiCola
+Link: https://learn.adafruit.com/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts/circuitpython-for-rfm9x-lora
 '''
 
 import math
 import time
 
-import adafruit_displayio_ssd1306
+import adafruit_ili9341
 import adafruit_mpl3115a2
 import adafruit_rfm9x
 import board
@@ -22,25 +22,64 @@ import digitalio
 import displayio
 import pwmio
 import terminalio
-from adafruit_display_shapes.circle import Circle
 from adafruit_display_shapes.line import Line
-from adafruit_display_shapes.triangle import Triangle
+from adafruit_display_shapes.rect import Rect
 from adafruit_display_text import label
 
-displayio.release_displays() #set up for OLED screen
+displayio.release_displays() #set up for screen by releasing all used pins for new display
 
-sda_pin = board.GP14 #sets pin for sda
-scl_pin = board.GP15 #sets pin for scl
-i2c = busio.I2C(scl_pin, sda_pin) #sets i2c
+spi = board.SPI #Use Hardware SPI
 
-display_bus = displayio.I2CDisplay(i2c, device_address = 0x3d, reset = board.GP2) #sets up OLED screen
-display = adafruit_displayio_ssd1306.SSD1306(display_bus, width=128, height=64) #sets up OLED screen
+tft_cs = board.D10
+tft_dc = board.D9
+
+display_bus = displayio.FourWire(spi, command=tft_dc, chip_select=tft_cs)
+display = adafruit_ili9341.ILI9341(display_bus, width=320, height=240)
+
+# Make the display context
+splash = displayio.Group()
+display.show(splash)
+
+# Draw a background
+color_bitmap = displayio.Bitmap(320, 240, 1)
+color_palette = displayio.Palette(1)
+color_palette[0] = 0xC3AFDB #Light Purple
+
+bg_sprite = displayio.TileGrid(color_bitmap, pixel_shader=color_palette, x=0, y=0)
+
+splash.append(bg_sprite)
+
+# Make the graph's axes
+hRect = Rect(40, 200, 240, 2, fill=0x470400)#sets start coordinates, width, height, and fill color of the line serving as the x-axis
+splash.append(hRect) #adds to splash
+
+vRect = Rect(40, 40, 2, 160, fill=0x470400) #sets start coordinates, width, height, and fill color of the line serving as the y-axis
+splash.append(vRect) #adds to splash
+
+### My science teacher said we have to label the axes!!!!! pls add >:(
+
+#label the x-axis
+text_group = displayio.Group(scale=1, x=240, y=210) #sets size and start position of message
+text = "time(s)"
+text_area = label.Label(terminalio.FONT, text=text, color=0x470400) #adds text to label x-axis to display group
+text_group.append(text_area)  #subgroup for text scaling
+splash.append(text_group) #adds to splash
+
+#label the y-axis
+text_group = displayio.Group(scale=1, x=3, y=45) #sets size and start position of message
+text = "alt(m)"
+text_area = label.Label(terminalio.FONT, text=text, color=0x470400) #adds text to label y-axis to display group
+text_group.append(text_area)  #subgroup for text scaling
+splash.append(text_group) #adds to splash
+
+yPixel = 160 #origin of graph
+xPixel = 40 #origin of graph
 
 
 #LoRa setup
 
 # Define radio parameters.
-RADIO_FREQ_MHZ = 915.0  # Frequency of the radio in Mhz. Must match yourm module!
+RADIO_FREQ_MHZ = 915.0 # Frequency of the radio in Mhz. Must match yourm module!
 
 # Define pins connected to the chip, use these if wiring up the breakout according to the guide:
 CS = digitalio.DigitalInOut(board.GP17)
@@ -53,35 +92,25 @@ spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
 
 # Note that the radio is configured in LoRa mode so you can't control sync word, encryption, frequency deviation, or other settings!
-# You can however adjust the transmit power (in dB).  The default is 13 dB butm high power radios like the RFM95 can go up to 23 dB:
+# You can however adjust the transmit power (in dB). The default is 13 dB butm high power radios like the RFM95 can go up to 23 dB:
 
 rfm9x.tx_power = 23
 
-altitude_initial = 0 #sets initial altitude
+lastMeters = 0 #sets last known altitude to 0
+currentMeters = 0 #sets initial current altitude to 0
 max_altitude = 22 #temporary value
 
-msg1 = ["helloo!", "n"] # turret_autosearch_1
-msg2 = ["put me down!", "n"] # turret_pickup_2
-msg3 = ["who are you?", "n"] # turret_pickup_5
-msg4 = ["help", "n"] # turret _pickup_8
-msg5 = ["are you still there?", "n"] # turret_search_1
-msg6 = ["no hard feelings", "n"] # turret_disabled_8
-msg7 = ["whyyyy", "n"] # turret_disabled_7
-msg8 = ["i dont blame you", "n"] # turret_disabled_5
-msg9 = ["my fault", 'n'] # turret_collide_4
-msg10 = ["goodnight", "n"] # turret_retire_5
-msg11 = ["aaaaaaaaa", "n"] #turret_fizzler_1
-
-max_area = 100  
-mid_x = 64 #x-coordinate of center of OLED screen display
-mid_y = 32 #y-coordinate of center of OLED screen display
+max_area = 100
 min_distance = 10000000000
 
 start_time = time.monotonic()
-altlist = [] #creates list of altitudes
-timelist = [] #creates list of times
+altlist = [0] #creates list of altitudes
+timelist = [0] #creates list of times
+
+messagePin = #array full of pins! wait- is that a real thing?
 
 print("Waiting for packets...")
+
 
 while True:
     packet = rfm9x.receive()
@@ -96,91 +125,34 @@ while True:
         LED.value = True
         # Print out the raw bytes of the packet:
         print("Received (raw bytes): {0}".format(packet)) # decodes to ASCII text and prints it
-        # raw bytes are always recieved, must be converted to text format like ASCII to do string processing on data. 
+        # raw bytes are always recieved, must be converted to text format like ASCII to do string processing on data.
         # always make sure ASCII data is being sent before trying to decode
-        
+
         packet_text = str(packet, "ascii")
         print("Received (ASCII): {0}".format(packet_text)) #reads the RSSI (signal strength) of last recieved message and prints it
 
         rssi = rfm9x.last_rssi
         print("Received signal strength: {0} dB".format(rssi))
 
-    current_altitude = int(packet_text)
-    
+    currentMeters = int(packet_text)
+
     print(f"Altitude: {current_altitude} meters")
-    
-    
-    if altitude_initial = 0:
-        altitude_intial = current_altitude
-    
-    if (current_altitude - altitude_initial) > 0 and (current_altitude - altitude_initial) < 2 and msg1[1] == "n": #temporary altitude values
-        print(msg1[0])
-        altlist.append(current_altitude)
+    if currentMeters - lastMeters >= 3:
+        currentPin = digitalio.DigitalInOut(messagePin[currentMeters])
+        currentPin.direction = digitalio.Direction.OUTPUT
+        currentPin = True #or is it false?? idk
+        time.sleep(.2)
+        currentPin = False
+        altlist.append(currentMeters)
         timelist.append(time.monotonic() - start_time)
-        msg1[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 2 and (current_altitude - altitude_initial) < 4 and msg2[1] == "n": #temporary altitude values
-        print(msg2[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg2[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 4 and (current_altitude - altitude_initial) < 6 and msg3[1] == "n": #temporary altitude values
-        print(msg3[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg3[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 6 and (current_altitude - altitude_initial) < 8 and msg4[1] == "n": #temporary altitude values
-        print(msg4[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg4[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 8 and (current_altitude - altitude_initial) < 10 and msg5[1] == "n": #temporary altitude values
-        print(msg5[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg5[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 10 and (current_altitude - altitude_initial) < 12 and msg6[1] == "n": #temporary altitude values
-        print(msg6[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg6[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 12 and (current_altitude - altitude_initial) < 14 and msg7[1] == "n": #temporary altitude values
-        print(msg7[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg7[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 14 and (current_altitude - altitude_initial) < 16 and msg8[1] == "n": #temporary altitude values
-        print(msg8[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg8[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 16 and (current_altitude - altitude_initial) < 18 and msg9[1] == "n": #temporary altitude values
-        print(msg9[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg9[1] = "y"
-        
-    if (current_altitude - altitude_initial) > 18 and (current_altitude - altitude_initial) < 20 and msg10[1] == "n": #temporary altitude values
-        print(msg10[0])
-        altlist.append(current_altitude)
-        timelist.append(time.monotonic() - start_time)
-        msg10[1] = "y"
-    
-    splash = displayio.Group() #creates display group
-    
-    hline = Line(0,5,128,5, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the x-axis
-    splash.append(hline) #adds to splash
-        
-    vline = Line(5,64,5,0, color=0xFFFF00) #sets color, start coordinates, and end coordinates of the line serving as the y-axis
-    splash.append(vline) #adds to splash
-        
-    display.show(splash) #sends display group to OLED screen
+        lastMeters = currentMeters
+
+    for i in range(len(timelist)-1): #is that syntax correct for range()? -------------------------CHECK
+
+        line = Line(xPixel+timelist[i], yPixel-altlist[i], xPixel+timelist[i+1], yPixel-altlist[i+1], color=0xFFFF00)
+        splash.append(line)
+
+
+    #display.show(splash) #sends display group to OLED screen
 
     time.sleep(1) #wait one second
