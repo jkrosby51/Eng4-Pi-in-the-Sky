@@ -11,25 +11,22 @@ LoRa code:
 '''
 
 
-import board
 import math
 import time
 
+import adafruit_displayio_ssd1306
 import adafruit_mpl3115a2
 import adafruit_rfm9x
+import board
 import busio
 import digitalio
-import pwmio
-from adafruit_display_shapes.triangle import Triangle
-from adafruit_display_shapes.line import Line
-from adafruit_display_shapes.circle import Circle
-import busio
 import displayio
+import pwmio
 import terminalio
-import adafruit_displayio_ssd1306
+from adafruit_display_shapes.circle import Circle
+from adafruit_display_shapes.line import Line
+from adafruit_display_shapes.triangle import Triangle
 from adafruit_display_text import label
-
-
 
 #LoRa setup
 

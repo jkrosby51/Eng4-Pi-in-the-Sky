@@ -5,12 +5,13 @@
 
 import math
 import time
+
 import adafruit_mpl3115a2
+import adafruit_rfm9x
 import board
 import busio
 import digitalio
 import pwmio
-import adafruit_rfm9x
 from adafruit_motor import servo
 
 sda_pin = board.GP14   
