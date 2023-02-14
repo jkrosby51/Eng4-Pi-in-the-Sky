@@ -1,10 +1,11 @@
+import adafruit_ili9341
 import board
-import terminalio
 import displayio
-from adafruit_display_text import label
+import terminalio
 from adafruit_display_shapes.line import Line
 from adafruit_display_shapes.rect import Rect
-import adafruit_ili9341
+from adafruit_display_text import label
+
 displayio.release_displays() #set up for screen by releasing all used pins for new display
 # Use Hardware SPI
 spi = board.SPI()
