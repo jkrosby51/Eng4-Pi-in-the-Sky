@@ -79,11 +79,9 @@ xPixel = 40 #origin of graph
 RADIO_FREQ_MHZ = 915.0 # Frequency of the radio in Mhz. Must match yourm module!
 
 # Define pins connected to the chip, use these if wiring up the breakout according to the guide:
-CS = digitalio.DigitalInOut(board.GP17)
-RESET = digitalio.DigitalInOut(board.GP16)
-
-# Initialize SPI bus.
-spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
+CS = digitalio.DigitalInOut(board.GP8)
+RESET = digitalio.DigitalInOut(board.GP9)
+spi = busio.SPI(clock=board.GP2, MOSI=board.D1, MISO=board.D0)
 
 # Initialze RFM radio
 rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
@@ -144,7 +142,7 @@ while True:
         #takes pin from already setup array of pins, sets it on and off to simulate a button press to the board
         msgPins[int(int(currentMeters) / 3)] = True #or is it False??  
         time.sleep(.2)
-        msgPins[int(int(currentMeters) / 3)] = True #or is it True?? 
+        msgPins[int(int(currentMeters) / 3)] = False #or is it True?? 
 
         altlist.append(currentMeters)
         timelist.append(time.monotonic() - start_time)
