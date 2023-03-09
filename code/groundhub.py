@@ -25,7 +25,7 @@ from adafruit_display_text import label
 
 displayio.release_displays() #set up for screen by releasing all used pins for new display
 
-spi = board.SPI #Use Hardware SPI
+spi = busio.SPI(clock=board.D13, MOSI=board.D11, MISO=board.D12)
 
 tft_cs = board.D10
 tft_dc = board.D9
@@ -79,12 +79,10 @@ xPixel = 40 #origin of graph
 RADIO_FREQ_MHZ = 915.0 # Frequency of the radio in Mhz. Must match yourm module!
 
 # Define pins connected to the chip, use these if wiring up the breakout according to the guide:
-CS = digitalio.DigitalInOut(board.GP8)
-RESET = digitalio.DigitalInOut(board.GP9)
-spi = busio.SPI(clock=board.GP2, MOSI=board.D1, MISO=board.D0)
-
+LoRa_CS = digitalio.DigitalInOut(board.D3)
+LoRa_RESET = digitalio.DigitalInOut(board.D4)
 # Initialze RFM radio
-rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
+rfm9x = adafruit_rfm9x.RFM9x(spi, LoRa_CS, LoRa_RESET, RADIO_FREQ_MHZ)
 
 # Note that the radio is configured in LoRa mode so you can't control sync word, encryption, frequency deviation, or other settings!
 # You can however adjust the transmit power (in dB). The default is 13 dB butm high power radios like the RFM95 can go up to 23 dB:
