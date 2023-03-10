@@ -41,7 +41,6 @@
 | 5/05  | Analyze data                                                           |
 | 5/19  | Finish analyzing data, final documentation, submit project             |
 
-**Every week will consist of a check in and summary**
 
 ### Parts and Uses
 
