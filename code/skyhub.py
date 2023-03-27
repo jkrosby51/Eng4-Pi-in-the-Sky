@@ -38,6 +38,8 @@ while True:
     alt = sensor.altitude - altitude_initial + 1
     print(alt)
     rfm9x.send(str(alt))
-
+    servo1.angle = 90
     if int(alt) >= max_altitude:
-        servo1.angle = 0           ### TEMP VAL --- find out the correct angle
+        servo1.angle = 0          
+        time.sleep(5)        ### TEMP VAL --- adjust delay as needed
+        servo1.angle = 90
