@@ -32,12 +32,12 @@ rfm9x.tx_power = 23
 #sealevel_Pa = 102290                           ### Find current sea level kPa in Charlottesville here: https://barometricpressure.app/results?lat=38.0386569&lng=-78.4846401
 #sensor.sealevel_pressure =  sealevel_Pa         ### Manually set sealevel pressure (in Pascals) based on current weather data for more accuracy
 altitude_initial = sensor.altitude #sets initial altitude to be starting altitude instead of sea-level
-max_altitude = 22 #temporary value
+max_altitude = 22 ###   TEMP VAL --- find out the correct max altitude
 
 while True:
     alt = sensor.altitude - altitude_initial + 1
     print(alt)
     rfm9x.send(str(alt))
 
-    #if int(alt) >= max_altitude:
-        #servo1.angle = 0                        ### figure out the exact angle later
+    if int(alt) >= max_altitude:
+        servo1.angle = 0           ### TEMP VAL --- find out the correct angle
