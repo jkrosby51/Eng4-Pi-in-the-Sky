@@ -96,17 +96,14 @@
 
 
 ## Code
+
 ### Payload
 
 ### Groundhub
-**Task Breakdown**
 
-![task breakdown](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/maintaskbreakdown.png)
 
-**Code Block Diagram**
-
-![code block diagram](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/Engi4.pi-in-the-sky.code-diagram.png)
 ## CAD
+
 ### Payload
 
 ### Groundhub
