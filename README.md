@@ -1,9 +1,11 @@
 # Eng4-Pi-in-the-Sky
 
-- [Planning](#planning)
-- [Code](#code)
+- [Planning](#Planning)
+- [Code](#Code)
+  - [Payload](##Payload)
+  - [Groundhub](##Code) 
 - [CAD](#CAD)
-- [About Us](#about-us)
+- [About Us](#About-Us)
 
 ## Planning
 
@@ -92,6 +94,9 @@
 
 
 ## Code
+### Payload
+
+### Groundhub
 
 
 ## CAD
