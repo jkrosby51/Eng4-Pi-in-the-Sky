@@ -2,8 +2,8 @@
 
 - [Planning](#Planning)
 - [Code](#Code)
-  - [Payload](##Payload)
-  - [Groundhub](##Code) 
+  - [Payload](#Payload)
+  - [Groundhub](#Groundhub) 
 - [CAD](#CAD)
 - [About Us](#About-Us)
 
