@@ -99,7 +99,24 @@
 ### Payload
 
 ### Groundhub
-
+| -------------------- | --- |
+| Rasberry Pi Pico     |     |
+| Altimeter            |     |
+| Foam Padding         |     |
+| Helium Balloons      |     |
+| #4/40 Nuts and Bolts |     |
+| Acrylic              |     |
+| PLA                  |     |
+| LoRa Radio           |     |
+| Phone                |     |
+| Wires                |     |
+| Servos               |     |
+| Resistors            |     |
+| Switches             |     |
+| LEDs                 |     |
+| String               |     |
+| Powerboost           |     |
+| Battery              |     |
 
 ## CAD
 ### Payload
