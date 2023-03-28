@@ -99,25 +99,13 @@
 ### Payload
 
 ### Groundhub
-| -------------------- | --- |
-| Rasberry Pi Pico     |     |
-| Altimeter            |     |
-| Foam Padding         |     |
-| Helium Balloons      |     |
-| #4/40 Nuts and Bolts |     |
-| Acrylic              |     |
-| PLA                  |     |
-| LoRa Radio           |     |
-| Phone                |     |
-| Wires                |     |
-| Servos               |     |
-| Resistors            |     |
-| Switches             |     |
-| LEDs                 |     |
-| String               |     |
-| Powerboost           |     |
-| Battery              |     |
+**Task Breakdown**
 
+![task breakdown](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/maintaskbreakdown.png)
+
+**Code Block Diagram**
+
+![code block diagram](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/Engi4.pi-in-the-sky.code-diagram.png)
 ## CAD
 ### Payload
 
