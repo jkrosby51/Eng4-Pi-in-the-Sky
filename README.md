@@ -99,13 +99,11 @@
 
 ### Payload
 
+The payload didn't have very much necessary code on it, but it handles collecting and sending altitude date to the ground hub using an altimeter and LoRa transceiver, and it controls the drop mechanic with a continuous mini servo once it reaches the defined maximum altitude.
 
 ### Groundhub
 
-
 ## CAD
-
-The payload didn't have very much necessary code on it, but it handles collecting and sending altitude date to the ground hub using an altimeter and LoRa transceiver, and it controls the drop mechanic with a continuous mini servo once it reaches the defined maximum altitude.
 
 ### Payload
 
