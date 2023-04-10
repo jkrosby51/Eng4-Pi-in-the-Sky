@@ -26,6 +26,8 @@ spi = busio.SPI(clock=board.GP2, MOSI=board.GP3, MISO=board.GP4)
 rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
 rfm9x.tx_power = 23
 
+data = [] #Store height(m) & time(s) data on here as tuples (backup in case ground hub doesnt get data)
+
 #pwm_servo = pwmio.PWMOut(board.GP16, duty_cycle=2 ** 15, frequency=50)  # pulse may need to be tuned to specific servo
 #servo1 = servo.Servo(pwm_servo, min_pulse=500, max_pulse=2200)
 
@@ -37,6 +39,7 @@ max_altitude = 22 ###   TEMP VAL --- find out the correct max altitude
 while True:
     alt = sensor.altitude - altitude_initial + 1
     print(alt)
+    data.append((alt,time.monotonic()) #stores data as tuple, (meters from starting pos, fractional seconds). To interperet the time take the difference between data points.
     rfm9x.send(str(alt))
     servo1.angle = 90
     if int(alt) >= max_altitude:
