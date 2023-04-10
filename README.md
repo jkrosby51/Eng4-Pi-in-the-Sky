@@ -99,7 +99,22 @@
 
 ### Payload
 
-The payload didn't have very much necessary code on it, but it handles collecting and sending altitude date to the ground hub using an altimeter and LoRa transceiver, and it controls the drop mechanic with a continuous mini servo once it reaches the defined maximum altitude.
+The payload didn't have very much necessary code on it, but it handles collecting and sending altitude date to the ground hub using an altimeter and LoRa transceiver, nd it controls the drop mechanic with a continuous mini servo so that it begins to fall when it reaches the defined maximum altitude. Due to the simplicity of the goals for the payload, the code is fairly straight forward and did not come with many issues. 
+
+The most important section of the code to comment on is the use of the LoRa transceiver as it took some trial and error to get working.
+```python3
+RADIO_FREQ_MHZ = 915.0      # depends on module
+CS = digitalio.DigitalInOut(board.GP8)
+RESET = digitalio.DigitalInOut(board.GP9)
+spi = busio.SPI(clock=board.GP2, MOSI=board.GP3, MISO=board.GP4)
+rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
+rfm9x.tx_power = 23         # adjusts power output, check board for maximum
+
+rfm9x.send(data)
+```
+The [Adafruit RFM9x LoRa CircuitPython guide](https://learn.adafruit.com/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts/circuitpython-for-rfm9x-lora) was very useful for finding the correct wiring, code, and module details needed to use the RFM9x, along with a basic pico diagram to make sure that the pins we were using would work for specific pin types that the transceiver needed, such as the spi pins. The Radio Frequency (RADIO_FREQ_MHZ) value is specific to the RFM9x, which can use either 868MHz or 915MHz, and the maximum output power (tx_power) value for the module is 23, both of these values were found on the adafruit guide linked above. The rest of the commented code, including setup and usage of the altimeter, mini continuous servo, and data storage linked below.
+
+[Full Code](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/code/skyhub.py)
 
 ### Groundhub
 
