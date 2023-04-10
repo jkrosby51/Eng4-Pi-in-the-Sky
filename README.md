@@ -110,7 +110,7 @@ spi = busio.SPI(clock=board.GP2, MOSI=board.GP3, MISO=board.GP4)
 rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
 rfm9x.tx_power = 23         # adjusts power output, check board for maximum
 
-rfm9x.send(data)
+rfm9x.send(height)
 ```
 The [Adafruit RFM9x LoRa CircuitPython guide](https://learn.adafruit.com/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts/circuitpython-for-rfm9x-lora) was very useful for finding the correct wiring, code, and module details needed to use the RFM9x, along with a basic pico diagram to make sure that the pins we were using would work for specific pin types that the transceiver needed, such as the spi pins. The Radio Frequency (RADIO_FREQ_MHZ) value is specific to the RFM9x, which can use either 868MHz or 915MHz, and the maximum output power (tx_power) value for the module is 23, both of these values were found on the adafruit guide linked above. The rest of the commented code, including setup and usage of the altimeter, mini continuous servo, and data storage linked below.
 
