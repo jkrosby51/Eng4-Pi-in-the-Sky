@@ -1,7 +1,7 @@
 #type: ignore
-# https://learn.adafruit.com/using-mpl3115a2-with-circuitpython
-# https://www.tomshardware.com/how-to/get-wi-fi-internet-on-raspberry-pi-pico
-# https://www.howtoforge.com/using-an-android-smartphone-as-a-wlan-hotspot
+#  Wiring/Code References
+#1 https://learn.adafruit.com/using-mpl3115a2-with-circuitpython
+#2 https://learn.adafruit.com/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts/circuitpython-for-rfm9x-lora
 
 import math
 import time
@@ -14,27 +14,26 @@ import digitalio
 import pwmio
 from adafruit_motor import servo
 
+# Setting up hardware -- specific pins found on board using pico pin diagram
 sda_pin = board.GP14   
 scl_pin = board.GP15       
 i2c = busio.I2C(scl_pin, sda_pin)
 sensor = adafruit_mpl3115a2.MPL3115A2(i2c)
 
-RADIO_FREQ_MHZ = 915.0
+RADIO_FREQ_MHZ = 915.0      # depends on module
 CS = digitalio.DigitalInOut(board.GP8)
 RESET = digitalio.DigitalInOut(board.GP9)
 spi = busio.SPI(clock=board.GP2, MOSI=board.GP3, MISO=board.GP4)
 rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
-rfm9x.tx_power = 23
+rfm9x.tx_power = 23         # adjusts power output, check board for maximum
+
+pwm_servo = pwmio.PWMOut(board.GP16, duty_cycle=2 ** 15, frequency=50)  # pulse may need to be tuned to specific servo
+servo1 = servo.Servo(pwm_servo, min_pulse=500, max_pulse=2200)
+
+altitude_initial = sensor.altitude # sets initial altitude to be starting altitude instead of sea-level
+max_altitude = 22           ### in meters, adjust as needed
 
 data = [] #Store height(m) & time(s) data on here as tuples (backup in case ground hub doesnt get data)
-
-#pwm_servo = pwmio.PWMOut(board.GP16, duty_cycle=2 ** 15, frequency=50)  # pulse may need to be tuned to specific servo
-#servo1 = servo.Servo(pwm_servo, min_pulse=500, max_pulse=2200)
-
-#sealevel_Pa = 102290                           ### Find current sea level kPa in Charlottesville here: https://barometricpressure.app/results?lat=38.0386569&lng=-78.4846401
-#sensor.sealevel_pressure =  sealevel_Pa         ### Manually set sealevel pressure (in Pascals) based on current weather data for more accuracy
-altitude_initial = sensor.altitude #sets initial altitude to be starting altitude instead of sea-level
-max_altitude = 22 ###   TEMP VAL --- find out the correct max altitude
 
 while True:
     alt = sensor.altitude - altitude_initial + 1
@@ -42,9 +41,9 @@ while True:
     data.append((alt,time.monotonic()) #stores data as tuple, (meters from starting pos, fractional seconds). To interperet the time take the difference between data points.
     rfm9x.send(str(alt))
     print(data)
-    servo1.angle = 90
+    servo1.angle = 90        # continuous servo stays still
     if int(alt) >= max_altitude:
-        servo1.angle = 0          
-        time.sleep(5)        ### TEMP VAL --- adjust delay as needed
+        servo1.angle = 0     # continuous servo moves counter clockwise
+        time.sleep(5)        ### in seconds, adjust delay as needed
         servo1.angle = 90
     
