@@ -99,7 +99,7 @@
 
 ### Payload
 
-The payload didn't have very much necessary code on it, but it handles collecting and sending altitude date to the ground hub using an altimeter and LoRa transceiver, nd it controls the drop mechanic with a continuous mini servo so that it begins to fall when it reaches the defined maximum altitude. Due to the simplicity of the goals for the payload, the code is fairly straight forward and did not come with many issues. 
+The payload didn't have very much necessary code on it, only handling the collecting and sending of altitude data to the ground hub using an altimeter and LoRa transceiver, nd it controls the drop mechanic with a continuous mini servo so that it begins to fall when it reaches the defined maximum altitude. Due to the simplicity of the goals for the payload, the code is fairly straight forward and did not come with many issues. 
 
 The most important section of the code to comment on is the use of the LoRa transceiver as it took some trial and error to get working.
 ```python3
