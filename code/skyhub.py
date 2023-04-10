@@ -41,8 +41,10 @@ while True:
     print(alt)
     data.append((alt,time.monotonic()) #stores data as tuple, (meters from starting pos, fractional seconds). To interperet the time take the difference between data points.
     rfm9x.send(str(alt))
+    print(data)
     servo1.angle = 90
     if int(alt) >= max_altitude:
         servo1.angle = 0          
         time.sleep(5)        ### TEMP VAL --- adjust delay as needed
         servo1.angle = 90
+    
