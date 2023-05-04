@@ -8,6 +8,7 @@
   - [Payload](#Payload-1)
   - [Groundhub](#Groundhub-1) 
 - [Testing Footage](#Testing-Footage) 
+  - [Drop Mechanism](#Drop-Mechanism)
 - [About Us](#About-Us)
 
 ## Planning
@@ -130,7 +131,7 @@ The [Adafruit RFM9x LoRa CircuitPython guide](https://learn.adafruit.com/adafrui
 
 ## Testing Footage
 
-### Drop Mechanism Test
+### Drop Mechanism
 
 Since we're using balloons to get the payload into the air, we needed to figure out a way to get it back down without it breaking. To do this, we designed a rod that attaches to the servo horn. While some of the balloons will be tied directly to the payload, the strings of some others will be wrapped around this rod. When the payload reaches a certain altitude, the servo will move, which will unwrap the balloons (the released balloons will be tied to a separate string that we'll use to pull them down, similar to a kite). With less balloons attached, the payload should begin to fall. In order to prevent it from breaking upon impact, we will leave enough balloons attached to slow the descent.
 
