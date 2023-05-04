@@ -7,6 +7,7 @@
 - [CAD](#CAD)
   - [Payload](#Payload-1)
   - [Groundhub](#Groundhub-1) 
+- [Testing Footage](#Testing-Footage) 
 - [About Us](#About-Us)
 
 ## Planning
@@ -118,7 +119,6 @@ The [Adafruit RFM9x LoRa CircuitPython guide](https://learn.adafruit.com/adafrui
 
 
 
-![video](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/Drop_test.mp4)
 
 ### Groundhub
 
@@ -127,6 +127,16 @@ The [Adafruit RFM9x LoRa CircuitPython guide](https://learn.adafruit.com/adafrui
 ### Payload
 
 ### Groundhub
+
+## Testing Footage
+
+### Drop Mechanism Test
+
+Since we're using balloons to get the payload into the air, we needed to figure out a way to get it back down without it breaking. To do this, we designed a rod that attaches to the servo horn. While some of the balloons will be tied directly to the payload, the strings of some others will be wrapped around this rod. When the payload reaches a certain altitude, the servo will move, which will unwrap the balloons (the released balloons will be tied to a separate string that we'll use to pull them down, similar to a kite). With less balloons attached, the payload should begin to fall. In order to prevent it from breaking upon impact, we will leave enough balloons attached to slow the descent.
+
+Our first test of this mechanism, shown in the video below, was done without balloons. We set a test altitude that is much lower than our final one in order to make sure that it would work properly and fully unwrap the string. We did have to run this test multiple times, since the direction the string is wrapped is important. For the first few tests, we wrapped the string in the same direction the servo rotates, resulting in the payload "eating" it.
+
+https://user-images.githubusercontent.com/56935262/236252742-cf3a1b80-0070-4444-83cb-54d3029338d6.mp4
 
 ## About Us
 
