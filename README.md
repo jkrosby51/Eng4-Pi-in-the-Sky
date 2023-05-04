@@ -1,9 +1,15 @@
 # Eng4-Pi-in-the-Sky
 
-- [Planning](#planning)
-- [Code](#code)
+- [Planning](#Planning)
+- [Code](#Code)
+  - [Payload](#Payload)
+  - [Groundhub](#Groundhub) 
 - [CAD](#CAD)
-- [About Us](#about-us)
+  - [Payload](#Payload-1)
+  - [Groundhub](#Groundhub-1) 
+- [Testing Footage](#Testing-Footage) 
+  - [Drop Mechanism](#Drop-Mechanism)
+- [About Us](#About-Us)
 
 ## Planning
 
@@ -93,9 +99,45 @@
 
 ## Code
 
+### Payload
+
+The payload didn't have very much necessary code on it, only handling the collecting and sending of altitude data to the ground hub using an altimeter and LoRa transceiver, nd it controls the drop mechanic with a continuous mini servo so that it begins to fall when it reaches the defined maximum altitude. Due to the simplicity of the goals for the payload, the code is fairly straight forward and did not come with many issues. 
+
+The most important section of the code to comment on is the use of the LoRa transceiver as it took some trial and error to get working.
+```python3
+RADIO_FREQ_MHZ = 915.0      # depends on module
+CS = digitalio.DigitalInOut(board.GP8)
+RESET = digitalio.DigitalInOut(board.GP9)
+spi = busio.SPI(clock=board.GP2, MOSI=board.GP3, MISO=board.GP4)
+rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
+rfm9x.tx_power = 23         # adjusts power output, check board for maximum
+
+rfm9x.send(height)
+```
+The [Adafruit RFM9x LoRa CircuitPython guide](https://learn.adafruit.com/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts/circuitpython-for-rfm9x-lora) was very useful for finding the correct wiring, code, and module details needed to use the RFM9x, along with a basic pico diagram to make sure that the pins we were using would work for specific pin types that the transceiver needed, such as the spi pins. The Radio Frequency (RADIO_FREQ_MHZ) value is specific to the RFM9x, which can use either 868MHz or 915MHz, and the maximum output power (tx_power) value for the module is 23, both of these values were found on the adafruit guide linked above. The rest of the commented code, including setup and usage of the altimeter, mini continuous servo, and data storage linked below.
+
+[Full Code](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/code/skyhub.py)
+
+
+
+
+### Groundhub
 
 ## CAD
 
+### Payload
+
+### Groundhub
+
+## Testing Footage
+
+### Drop Mechanism
+
+Since we're using balloons to get the payload into the air, we needed to figure out a way to get it back down without it breaking. To do this, we designed a rod that attaches to the servo horn. While some of the balloons will be tied directly to the payload, the strings of some others will be wrapped around this rod. When the payload reaches a certain altitude, the servo will move, which will unwrap the balloons (the released balloons will be tied to a separate string that we'll use to pull them down, similar to a kite). With less balloons attached, the payload should begin to fall. In order to prevent it from breaking upon impact, we will leave enough balloons attached to slow the descent.
+
+Our first test of this mechanism, shown in the video below, was done without balloons. We set a test altitude that is much lower than our final one in order to make sure that it would work properly and fully unwrap the string. We did have to run this test multiple times, since the direction the string is wrapped is important. For the first few tests, we wrapped the string in the same direction the servo rotates, resulting in the payload "eating" it.
+
+https://user-images.githubusercontent.com/56935262/236252742-cf3a1b80-0070-4444-83cb-54d3029338d6.mp4
 
 ## About Us
 
