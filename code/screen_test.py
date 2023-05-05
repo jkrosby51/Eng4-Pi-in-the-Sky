@@ -2,19 +2,20 @@ import adafruit_ili9341
 import board
 import displayio
 import terminalio
+import busio
 from adafruit_display_shapes.line import Line
 from adafruit_display_shapes.rect import Rect
 from adafruit_display_text import label
 
 displayio.release_displays() #set up for screen by releasing all used pins for new display
-# Use Hardware SPI
-spi = board.SPI()
+
+spi = busio.SPI(clock=board.D13, MOSI=board.D11, MISO=board.D12)
 
 tft_cs = board.D10
 tft_dc = board.D9
 
 display_bus = displayio.FourWire(spi, command=tft_dc, chip_select=tft_cs)
-display = adafruit_ili9341.ILI9341(display_bus, width=320, height=240)
+display = adafruit_ili9341.ILI9341(display_bus, width=320, height=240, rotation=180)
 
 # Make the display context
 splash = displayio.Group()

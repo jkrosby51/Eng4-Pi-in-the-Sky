@@ -31,7 +31,7 @@ tft_cs = board.D10
 tft_dc = board.D9
 
 display_bus = displayio.FourWire(spi, command=tft_dc, chip_select=tft_cs)
-display = adafruit_ili9341.ILI9341(display_bus, width=320, height=240)
+display = adafruit_ili9341.ILI9341(display_bus, width=320, height=240, rotation=180) #the last variable rotates the screen 180°, since the CAD element attaches the screen upsidedown
 
 # Make the display context
 splash = displayio.Group()
