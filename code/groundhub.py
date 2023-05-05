@@ -105,7 +105,7 @@ print("Waiting for packets...")
 
 #sets pins as the right direction n all that and then shoves em into a cool array for future use!
 msgPins = []
-pinArr = [board.D5, board.D6, board.D7, board.D8]
+pinArr = [board.A5, board.A4, board.D5, board.D6, board.D7, board.D8, board.A3, board.A2]
 for i in range(0, len(pinArr) ):
     tempPin = digitalio.DigitalInOut(pinArr[i])
     tempPin.direction = digitalio.Direction.OUTPUT
