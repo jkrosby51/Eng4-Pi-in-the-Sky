@@ -127,6 +127,9 @@ The [Adafruit RFM9x LoRa CircuitPython guide](https://learn.adafruit.com/adafrui
 
 ### Payload
 
+Designing the payload, we wanted something that could be opened easily, and that's center of mass would be roughly in the center of the design to avoid problems when flying. We did a circular design with a hinge to split it in half, and used shelves inside to hold the necessary parts. For the design and mechanics of the lift and landing, we made two attachment points for balloons on each side of a center point where we could wrap the string of a balloon around a servo attachment, allowing us to release that balloon remotely, making the payload float back down safely. Our biggest problem was maintaining a low mass, because the heavier the payload is, the more helium is needed to lift it. To solve this, we found spots which could be redesigned to use less material, and we were able to bring down the total weight a large amount. Our final design works well, but there are some ports which are somewhat difficult to use without unscrewing parts.
+
+
 ### Groundhub
 
 ## Testing Footage
