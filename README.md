@@ -143,6 +143,18 @@ Our first test of this mechanism, shown in the video below, was done without bal
 
 https://user-images.githubusercontent.com/56935262/236252742-cf3a1b80-0070-4444-83cb-54d3029338d6.mp4
 
+
+## To-Do
+
+* get balloons
+* document
+* figure out number and type of balloons
+* fix speaker
+* finish groubhub assembly
+* attach power switches
+* drill holes for power switches
+* make sure screen works
+* final launch
 ## About Us
 
 ### **Josie Muss**
