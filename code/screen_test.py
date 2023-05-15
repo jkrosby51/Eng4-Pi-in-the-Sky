@@ -1,4 +1,5 @@
 import adafruit_ili9341
+import time
 import board
 import displayio
 import terminalio
@@ -57,5 +58,19 @@ splash.append(text_group) #adds to splash
 yPixel = 160 #origin of graph
 xPixel = 40 #origin of graph
 
+#list of messages to use
+message_array = ["Hellooo!", "Put me down!", "What are you doing?", "Help!", "Thanks anyway...", "I'm scared...", "AHHHHHHHHH!", "I'm flyinnnng!"]
+        
+#display message!
+message_text = displayio.Group(scale=2, x=5, y=220) #sets size and start position of message
+text = message_array[4] #chooses the appropriate message from the array and sets it as the text
+text_area = label.Label(terminalio.FONT, text=text, color=0x470400) #adds text to label y-axis to display group
+message_text.append(text_area)  #subgroup for text scaling
+splash.append(message_text) #adds to splash
+
+time.sleep(1)
+
+splash.remove(message_text)
+        
 while True:
     pass

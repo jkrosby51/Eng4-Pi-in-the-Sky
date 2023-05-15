@@ -72,15 +72,6 @@ splash.append(text_group) #adds to splash
 yPixel = 160 #origin of graph
 xPixel = 40 #origin of graph
 
-#sets pins as the right direction n all that and then shoves em into a cool array for future use!
-msgPins = []
-pinArr = [board.A5, board.A4, board.D5, board.D6, board.D7, board.D8, board.A3, board.A2]
-for i in range(0, len(pinArr) ):
-    tempPin = digitalio.DigitalInOut(pinArr[i])
-    tempPin.direction = digitalio.Direction.OUTPUT
-    tempPin.value = False
-    msgPins.append(tempPin)  
-
 #LoRa setup
 
 # Define radio parameters.
@@ -108,17 +99,16 @@ start_time = time.monotonic()
 altlist = [0] #creates list of altitudes
 timelist = [0] #creates list of times
 
+#list of messages to use
+message_array = ["Hellooo!", "Put me down!", "What are you doing?", "Help!", "Thanks anyway...", "I'm scared...", "AHHHHHHHHH!", "I'm flyinnnng!"]
+
+message_text = displayio.Group(scale=2, x=5, y=220) #sets size and start position of message
+text = message_array[0] #chooses the appropriate message from the array and sets it as the text
+text_area = label.Label(terminalio.FONT, text=text, color=0x470400) #adds text to label y-axis to display group
+message_text.append(text_area)  #subgroup for text scaling
+splash.append(message_text) #adds to splash
 
 print("Waiting for packets...")
-
-#sets pins as the right direction n all that and then shoves em into a cool array for future use!
-msgPins = []
-pinArr = [board.A5, board.A4, board.D5, board.D6, board.D7, board.D8, board.A3, board.A2]
-for i in range(0, len(pinArr) ):
-    tempPin = digitalio.DigitalInOut(pinArr[i])
-    tempPin.direction = digitalio.Direction.OUTPUT
-    tempPin.value = False
-    msgPins.append(tempPin)  
 
 while True:
     packet = rfm9x.receive()
@@ -145,15 +135,20 @@ while True:
     currentMeters = int(packet_text)
 
     print(f"Altitude: {current_altitude} meters")
-    if currentMeters - lastMeters >= 3:
-        #takes pin from already setup array of pins, sets it on and off to simulate a button press to the board
-        msgPins[int(int(currentMeters) / 3)].value = True #or is it False??  
-        time.sleep(.2)
-        msgPins[int(int(currentMeters) / 3)].value = False #or is it True?? 
-
+    if currentMeters - lastMeters >= 1:
+        splash.remove(message_text) #removes last message
+        time.sleep(1) waits one second
+        #display message!
+        message_text = displayio.Group(scale=2, x=5, y=220) #sets size and start position of message
+        text = message_array[int(currentMeters/3)] #chooses the appropriate message from the array and sets it as the text
+        text_area = label.Label(terminalio.FONT, text=text, color=0x470400) #adds text to label y-axis to display group
+        message_text.append(text_area)  #subgroup for text scaling
+        splash.append(message_text) #adds to splash
+        
         altlist.append(currentMeters)
         timelist.append(time.monotonic() - start_time)
         lastMeters = currentMeters
+
 
 
     for i in range(len(timelist)-1): #is that syntax correct for range()? -------------------------CHECK
