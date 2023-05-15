@@ -72,6 +72,14 @@ splash.append(text_group) #adds to splash
 yPixel = 160 #origin of graph
 xPixel = 40 #origin of graph
 
+#sets pins as the right direction n all that and then shoves em into a cool array for future use!
+msgPins = []
+pinArr = [board.A5, board.A4, board.D5, board.D6, board.D7, board.D8, board.A3, board.A2]
+for i in range(0, len(pinArr) ):
+    tempPin = digitalio.DigitalInOut(pinArr[i])
+    tempPin.direction = digitalio.Direction.OUTPUT
+    tempPin.value = False
+    msgPins.append(tempPin)  
 
 #LoRa setup
 
@@ -109,6 +117,7 @@ pinArr = [board.A5, board.A4, board.D5, board.D6, board.D7, board.D8, board.A3, 
 for i in range(0, len(pinArr) ):
     tempPin = digitalio.DigitalInOut(pinArr[i])
     tempPin.direction = digitalio.Direction.OUTPUT
+    tempPin.value = False
     msgPins.append(tempPin)  
 
 while True:
@@ -138,9 +147,9 @@ while True:
     print(f"Altitude: {current_altitude} meters")
     if currentMeters - lastMeters >= 3:
         #takes pin from already setup array of pins, sets it on and off to simulate a button press to the board
-        msgPins[int(int(currentMeters) / 3)] = True #or is it False??  
+        msgPins[int(int(currentMeters) / 3)].value = True #or is it False??  
         time.sleep(.2)
-        msgPins[int(int(currentMeters) / 3)] = False #or is it True?? 
+        msgPins[int(int(currentMeters) / 3)].value = False #or is it True?? 
 
         altlist.append(currentMeters)
         timelist.append(time.monotonic() - start_time)
