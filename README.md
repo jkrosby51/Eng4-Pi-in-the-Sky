@@ -146,12 +146,9 @@ https://user-images.githubusercontent.com/56935262/236252742-cf3a1b80-0070-4444-
 
 ## To-Do
 
-* get balloons
+* get balloons (174g weight = 5.9 cu ft of helium) (3 18" balloons, plus an extra smaller one)
 * document
-* figure out number and type of balloons
-* fix speaker
 * finish groubhub assembly
-* attach power switches
 * make sure screen works
 * final launch
 ## About Us
