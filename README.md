@@ -152,7 +152,6 @@ https://user-images.githubusercontent.com/56935262/236252742-cf3a1b80-0070-4444-
 * fix speaker
 * finish groubhub assembly
 * attach power switches
-* drill holes for power switches
 * make sure screen works
 * final launch
 ## About Us
