@@ -13,6 +13,7 @@ import busio
 import digitalio
 import pwmio
 from adafruit_motor import servo
+import microcontroller
 
 sda_pin = board.GP0   
 scl_pin = board.GP1      
@@ -26,20 +27,28 @@ spi = busio.SPI(clock=board.GP2, MOSI=board.GP3, MISO=board.GP4)
 rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
 rfm9x.tx_power = 23
 
-### Servo scrapped :(
-#pwm_servo = pwmio.PWMOut(board.GP16, duty_cycle=2 ** 15, frequency=50)  # pulse may need to be tuned to specific servo
-#servo1 = servo.Servo(pwm_servo, min_pulse=500, max_pulse=2200)
-#servo1.angle = 89
+led = digitalio.DigitalInOut(board.LED)
+led.direction = digitalio.Direction.OUTPUT
 
 altitude_initial = sensor.altitude #sets initial altitude to be starting altitude instead of sea-level
-max_altitude = 2 ###   TEMP VAL --- find out the correct max altitude
 
-while True:
-    alt = sensor.altitude - altitude_initial + 1
-    print(alt)
-    rfm9x.send(str(alt))
+#If opened in data logging mode, log all data as it's collected and sent. Otherwise only collect and send.
+try:
+    with open("/boot_out.txt", "a") as datalogger:
+        led.value = True
+        datalogger.write("-------------------------")
+        while True:
+            alt = sensor.altitude - altitude_initial + 1
+            print(alt)
+            rfm9x.send(str(alt))
+            
+            datalogger.write(f"{alt}\n")
+            datalogger.flush()
+            time.sleep(.2)
+except OSError as e:  # Typically when the filesystem isn't writeable...
+    led.value = False
+    while True:
+        alt = sensor.altitude - altitude_initial + 1
+        print(alt)
+        rfm9x.send(str(alt))
     
-    if int(alt) >= max_altitude:
-        servo1.angle = 0        
-        time.sleep(5)        ### TEMP VAL --- adjust delay as needed
-        servo1.angle = 90 
