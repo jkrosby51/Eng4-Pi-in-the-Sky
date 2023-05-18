@@ -42,7 +42,7 @@ vRect = Rect(40, 40, 2, 160, fill=0x470400) #sets start coordinates, width, heig
 splash.append(vRect) #adds to splash
 
 #makes a custom font
-coord_font = bitmap_font.load_font("/JosefinSans-Thin-50.bdf")
+coord_font = bitmap_font.load_font("/lib/JosefinSans-Thin-50.bdf")
 
 ### My science teacher said we have to label the axes!!!!! pls add >:(
 
