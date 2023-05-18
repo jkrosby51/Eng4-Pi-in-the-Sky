@@ -8,6 +8,7 @@ from adafruit_display_shapes.line import Line
 from adafruit_display_shapes.rect import Rect
 from adafruit_display_shapes.circle import Circle
 from adafruit_display_text import label
+from adafruit_bitmap_font import bitmap_font
 
 displayio.release_displays() #set up for screen by releasing all used pins for new display
 
@@ -40,6 +41,9 @@ splash.append(hRect) #adds to splash
 vRect = Rect(40, 40, 2, 160, fill=0x470400) #sets start coordinates, width, height, and fill color of the line serving as the y-axis
 splash.append(vRect) #adds to splash
 
+#makes a custom font
+coord_font = bitmap_font.load_font("/JosefinSans-Thin-50.bdf")
+
 ### My science teacher said we have to label the axes!!!!! pls add >:(
 
 #label the x-axis
@@ -56,7 +60,7 @@ text_area = label.Label(terminalio.FONT, text=text, color=0x470400) #adds text t
 text_group.append(text_area)  #subgroup for text scaling
 splash.append(text_group) #adds to splash
 
-yPixel = 160 #origin of graph
+yPixel = 200 #origin of graph
 xPixel = 40 #origin of graph
 
 
@@ -86,7 +90,7 @@ for i in range(len(timelist)-1): #is that syntax correct for range()? ----------
     splash.append(circle)
     point_label = displayio.Group(scale=1, x=(xPixel+3*(timelist[i+1])), y=(yPixel-10*(altlist[i+1])-10)) #sets size and start position of message
     point = f"({timelist[i]}, {altlist[i]})" #chooses the appropriate message from the array and sets it as the text
-    text_area = label.Label(terminalio.FONT, text=point, color=0x0065ff) #adds text to label y-axis to display group
+    text_area = label.Label(coord_font, text=point, color=0x0065ff) #adds text to label y-axis to display group
     point_label.append(text_area)  #subgroup for text scaling
     splash.append(point_label) #adds to splash
     
