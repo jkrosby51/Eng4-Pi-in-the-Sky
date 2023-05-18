@@ -127,7 +127,7 @@ The [Adafruit RFM9x LoRa CircuitPython guide](https://learn.adafruit.com/adafrui
 
 ### Payload
 
-Designing the payload, we wanted something that could be opened easily, and that's center of mass would be roughly in the center of the design to avoid problems when flying. We did a circular design with a hinge to split it in half, and used shelves inside to hold the necessary parts. For the design and mechanics of the lift and landing, we made two attachment points for balloons on each side of a center point where we could wrap the string of a balloon around a servo attachment, allowing us to release that balloon remotely, making the payload float back down safely. Our biggest problem was maintaining a low mass, because the heavier the payload is, the more helium is needed to lift it. To solve this, we found spots which could be redesigned to use less material, and we were able to bring down the total weight a large amount. Our final design works well, but there are some ports which are somewhat difficult to use without unscrewing parts.
+Designing the payload, we wanted something that could be opened easily, and thats center of mass would be roughly in the center of the design to avoid problems when flying. We did a circular design with a hinge to split it in half, and used shelves inside to hold the necessary parts. For the design and mechanics of the lift and landing, we made two attachment points for balloons on each side of a center point where we could wrap the string of a balloon around a servo attachment, allowing us to release that balloon remotely, making the payload float back down safely. Our biggest problem was maintaining a low mass, because the heavier the payload is, the more helium is needed to lift it. To solve this, we found spots which could be redesigned to use less material, and we were able to bring down the total weight a large amount. Our final design works well, but there are some ports which are somewhat difficult to use without unscrewing parts.
 
 ![Payload Design](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/d2fedf610a3ad42f0f87dedb114dc86ccf7fb794/images/payloadCAD.png)
 
@@ -146,13 +146,9 @@ https://user-images.githubusercontent.com/56935262/236252742-cf3a1b80-0070-4444-
 
 ## To-Do
 
-* get balloons
+* get balloons (174g weight = 5.9 cu ft of helium) (3 18" balloons, plus an extra smaller one)
 * document
-* figure out number and type of balloons
-* fix speaker
 * finish groubhub assembly
-* attach power switches
-* drill holes for power switches
 * make sure screen works
 * final launch
 ## About Us
