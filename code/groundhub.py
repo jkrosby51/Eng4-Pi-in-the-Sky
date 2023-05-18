@@ -99,14 +99,19 @@ start_time = time.monotonic()
 altlist = [0] #creates list of altitudes
 timelist = [0] #creates list of times
 
-#list of messages to use
-message_array = ["Hellooo!", "Put me down!", "What are you doing?", "Help!", "Thanks anyway...", "I'm scared...", "AHHHHHHHHH!", "I'm flyinnnng!"]
+#list of messages to use when going up
+upmessage_array = ["Hellooo!", "Put me down!", "What are you doing?", "Help!", "Thanks anyway...", "I'm scared..."]
+
+#list of messages to use when going down
+downmessage_array = ["AHHHHHHHHH!", "I'm flyinnnng!"]
 
 message_text = displayio.Group(scale=2, x=5, y=220) #sets size and start position of message
-text = message_array[0] #chooses the appropriate message from the array and sets it as the text
-text_area = label.Label(terminalio.FONT, text=text, color=0x470400) #adds text to label y-axis to display group
-message_text.append(text_area)  #subgroup for text scaling
+msg = upmessage_array[0] #chooses the appropriate message from the array and sets it as the text
+msg_area = label.Label(terminalio.FONT, text=msg, color=0x470400) #adds text to label y-axis to display group
+message_text.append(msg_area)  #subgroup for text scaling
 splash.append(message_text) #adds to splash
+
+descending = False
 
 print("Waiting for packets...")
 
@@ -135,29 +140,26 @@ while True:
     currentMeters = int(packet_text)
 
     print(f"Altitude: {current_altitude} meters")
-    if currentMeters - lastMeters >= 1:
-        splash.remove(message_text) #removes last message
-        time.sleep(1) waits one second
-        #display message!
-        message_text = displayio.Group(scale=2, x=5, y=220) #sets size and start position of message
-        text = message_array[int(currentMeters/3)] #chooses the appropriate message from the array and sets it as the text
-        text_area = label.Label(terminalio.FONT, text=text, color=0x470400) #adds text to label y-axis to display group
-        message_text.append(text_area)  #subgroup for text scaling
-        splash.append(message_text) #adds to splash
+    
+    if currentMeters >= 7:
+        descending = True
+        
+    if currentMeters - lastMeters >= 1 and descending = False:
+        msg_area.msg = upmessage_array[int(currentMeters/3)] #changes the message text displayed to appropriate one from array
         
         altlist.append(currentMeters)
         timelist.append(time.monotonic() - start_time)
         lastMeters = currentMeters
+        
+    if descending = True:
+        msg_area.msg = downmessage_array[1] #changes the message text displayed to appropriate one from array
+        time.sleep(2)
+        text_area.text = downmessage_array[1]
+        altlist.append(currentMeters)
+        timelist.append(time.monotonic() - start_time)
+        lastMeters = currentMeters
 
-
-
-    for i in range(len(timelist)-1): #is that syntax correct for range()? -------------------------CHECK
-
-        line = Line(xPixel+timelist[i], yPixel-altlist[i], xPixel+timelist[i+1], yPixel-altlist[i+1], color=0xFFFF00)
+        line = Line(xPixel+timelist[len(timelist)-2]+, yPixel-altlist[i], xPixel+timelist[i+1], yPixel-altlist[i+1], color=0xFFFF00)
         splash.append(line)
-
-
-
     #display.show(splash) #sends display group to OLED screen
-
-    time.sleep(1) #wait one second
+    time.sleep(.2) #wait one second

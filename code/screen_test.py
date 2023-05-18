@@ -6,6 +6,7 @@ import terminalio
 import busio
 from adafruit_display_shapes.line import Line
 from adafruit_display_shapes.rect import Rect
+from adafruit_display_shapes.circle import Circle
 from adafruit_display_text import label
 
 displayio.release_displays() #set up for screen by releasing all used pins for new display
@@ -58,6 +59,11 @@ splash.append(text_group) #adds to splash
 yPixel = 160 #origin of graph
 xPixel = 40 #origin of graph
 
+
+start_time = time.monotonic()
+altlist = [0, 1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 2, 1, 0] #creates list of altitudes
+timelist = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70] #creates list of times
+
 #list of messages to use
 message_array = ["Hellooo!", "Put me down!", "What are you doing?", "Help!", "Thanks anyway...", "I'm scared...", "AHHHHHHHHH!", "I'm flyinnnng!"]
         
@@ -68,9 +74,21 @@ text_area = label.Label(terminalio.FONT, text=text, color=0x470400) #adds text t
 message_text.append(text_area)  #subgroup for text scaling
 splash.append(message_text) #adds to splash
 
-time.sleep(1)
-
-splash.remove(message_text)
-        
+for i in range(len(timelist)-1): #is that syntax correct for range()? -------------------------CHECK
+    #creates line to display data! First two parameters are the initial x- and y-positions of the line, and the second two are the final x- and y-positions! This final paramter sets the color of the line
+    #timelist[i] must be added to xPixel in order to create the line with respect to the origin of the graph, and altlist[i] must be subtracted from yPixel for the same reason
+    #The second pair of x- and y-coordinates are written with timelist[i+1] and altlist[i+1] respectively to ensure that the line will end at the next data point
+    #timelist is multiplied by 3 and altlist is multiplied by 10 in order to scale the graph to be visible and large enough to distinguish individual data points
+    line = Line(xPixel+3*(timelist[i]), yPixel-10*(altlist[i]), xPixel+3*(timelist[i+1]), yPixel-10*(altlist[i+1]), color=0xff5d00)
+    splash.append(line)
+    #The first two parameters center the circle around the data point at the end of the last graphed line
+    circle = Circle(xPixel+3*(timelist[i+1]), yPixel-10*(altlist[i+1]), 2, fill=0x0065ff, outline=0x0065ff)
+    splash.append(circle)
+    point_label = displayio.Group(scale=1, x=(xPixel+3*(timelist[i+1])), y=(yPixel-10*(altlist[i+1])-10)) #sets size and start position of message
+    point = f"({timelist[i]}, {altlist[i]})" #chooses the appropriate message from the array and sets it as the text
+    text_area = label.Label(terminalio.FONT, text=point, color=0x0065ff) #adds text to label y-axis to display group
+    point_label.append(text_area)  #subgroup for text scaling
+    splash.append(point_label) #adds to splash
+    
 while True:
     pass
