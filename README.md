@@ -49,27 +49,29 @@
 | 5/19  | Finish analyzing data, final documentation, submit project             |
 
 
-### Parts and Uses
+### Materials
 
-| Part                 | Use |
-| -------------------- | --- |
-| Rasberry Pi Pico     |     |
-| Altimeter            |     |
-| Foam Padding         |     |
-| Helium Balloons      |     |
-| #4/40 Nuts and Bolts |     |
-| Acrylic              |     |
-| PLA                  |     |
-| LoRa Radio           |     |
-| Phone                |     |
-| Wires                |     |
-| Servos               |     |
-| Resistors            |     |
-| Switches             |     |
-| LEDs                 |     |
-| String               |     |
-| Powerboost           |     |
-| Battery              |     |
+* Rasberry Pi Pico
+* Metro M4 Airlift Lite
+* Prototyping Shield
+* MPL3115A2 Altimeter
+* RFM9x LoRa
+* Helium Balloons
+* #4-40 Nuts and Bolts
+* #1-72 Nuts and Bolts
+* Acrylic
+* PLA and ABS
+* Wires
+* String
+* Continuous Servo
+* Powerboost and Battery
+* String
+* 9V battery and Mount
+* Locking Power Button
+* Power Switch
+* 2.8" Adafruit TFT Capacitive Touch Shield
+* Male-Female Standoffs
+* Perforated Circuit Board
 
 ### Safety
 
