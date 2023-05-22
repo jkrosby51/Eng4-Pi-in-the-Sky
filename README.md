@@ -146,15 +146,8 @@ https://user-images.githubusercontent.com/56935262/236252742-cf3a1b80-0070-4444-
 
 
 ## Reflection
-Unfortunately, with a week left before the project's due date, we ran into several roadblocks. Our plan for launch was to use balloons to lift our "skyhub" into the air. Unfortunately, the sources we used to calculate how many balloons would be needed to lift our project into the air were incorrect, and we did not purchase nearly enough balloons to lift even an inch above the ground, let alone attain the desired altitude. Due to this occuring so close to the finish line, we were forced to scrap our original plan, instead attaching the altimiter and LoRa boards to a phone-operated drone. We were also unaware that the Pico sending data back to a groundhub was not sufficient for data collection, and we had to scramble to introduce an on-board data storage system to the Pico at the last minute.
+Unfortunately, with a week left before the project's due date, we ran into several roadblocks. Our plan for launch was to use balloons to lift our "skyhub" into the air. Unfortunately, the sources we used to calculate how many balloons would be needed to lift our project into the air were incorrect, and we did not purchase nearly enough balloons to lift even an inch above the ground, let alone attain the desired altitude. Due to this occuring so close to the finish line, we were forced to scrap our original plan, instead attaching the altimiter and LoRa boards to a phone-operated drone. We were also unaware that the Pico sending data back to a groundhub was not sufficient for data collection, and we had to scramble to introduce an on-board data storage system to the Pico at the last minute. By the due date for launching, onboard storage was failing to properly write data, and the ground hub had it's own new issue. We unfortunately didn't have time to figure out the cause of those issues and so were unable to launch in time. Some of the main reasons for this was scope creep and poor prioritization, as we worked on non-essential parts of the project before finishing some essential parts which seemed easy to complete but turned out to cause more issues than anticipated. Some of these non-essential parts were also scrapped even after lots of time was put into it because issues came up which we weren't able to solve. Overall, to be more successful, we should have focused on making the flight and data collection work, and then add the fancy stuff afterwards.
 
-other issues to mention in reflection:
-* scope creep
-* focus on groundhub before testing skyhub because thought skyhub would work
-* speaker focus
-* soldering
-* no final launch
-* anything else
 
 stuff to add to docs
 * wire diagram
