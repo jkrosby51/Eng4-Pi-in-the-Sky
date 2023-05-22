@@ -9,6 +9,7 @@
   - [Groundhub](#Groundhub-1) 
 - [Testing Footage](#Testing-Footage) 
   - [Drop Mechanism](#Drop-Mechanism)
+- [Reflection](#Reflection) 
 - [About Us](#About-Us)
 
 ## Planning
@@ -143,6 +144,9 @@ Our first test of this mechanism, shown in the video below, was done without bal
 
 https://user-images.githubusercontent.com/56935262/236252742-cf3a1b80-0070-4444-83cb-54d3029338d6.mp4
 
+
+## Reflection
+Unfortunately, with a week left before the project's due date, we ran into several roadblocks. Our plan for launch was to use balloons to lift our "skyhub" into the air. Unfortunately, the sources we used to calculate how many balloons would be needed to lift our project into the air were incorrect, and we did not purchase nearly enough balloons to lift even an inch above the ground, let alone attain the desired altitude. Due to this occuring so close to the finish line, we were forced to scrap our original plan, instead attaching the altimiter and LoRa boards to a phone-operated drone. 
 
 ## To-Do
 
