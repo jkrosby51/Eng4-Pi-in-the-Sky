@@ -1,6 +1,10 @@
 # Eng4-Pi-in-the-Sky
 
 - [Planning](#Planning)
+  - [Description](#Description)
+  - [Timeline](#Timeline)
+  - [Materials](#Materials)
+  - [Images](#Images)
 - [Code](#Code)
   - [Payload](#Payload)
   - [Groundhub](#Groundhub) 
