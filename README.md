@@ -209,16 +209,14 @@ Unfortunately, with a week left before the project's due date, we ran into sever
 
 stuff to add to docs
 * wire diagram
-* finish reflection
 * finish ground hub cad doc
 
 ## To-Do
 
-* get balloons (174g weight = 5.9 cu ft of helium) (3 18" balloons, plus an extra smaller one)
 * document
 * finish groubhub assembly
-* make sure screen works
 * final launch
+
 ## About Us
 
 ### **Josie Muss**
