@@ -65,8 +65,9 @@ xPixel = 40 #origin of graph
 
 
 start_time = time.monotonic()
-altlist = [0, 1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 2, 1, 0] #creates list of altitudes
-timelist = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70] #creates list of times
+altlist = [0] #creates list of altitudes
+timelist = [0] #creates list of times
+count = [0, 1, 2, 3, 4, 5, 6, 7, 0]
 
 #list of messages to use
 message_array = ["Hellooo!", "Put me down!", "What are you doing?", "Help!", "Thanks anyway...", "I'm scared...", "AHHHHHHHHH!", "I'm flyinnnng!"]
@@ -77,7 +78,7 @@ text = message_array[4] #chooses the appropriate message from the array and sets
 text_area = label.Label(terminalio.FONT, text=text, color=0x470400) #adds text to label y-axis to display group
 message_text.append(text_area)  #subgroup for text scaling
 splash.append(message_text) #adds to splash
-
+'''
 for i in range(len(timelist)-1): #is that syntax correct for range()? -------------------------CHECK
     #creates line to display data! First two parameters are the initial x- and y-positions of the line, and the second two are the final x- and y-positions! This final paramter sets the color of the line
     #timelist[i] must be added to xPixel in order to create the line with respect to the origin of the graph, and altlist[i] must be subtracted from yPixel for the same reason
@@ -93,6 +94,23 @@ for i in range(len(timelist)-1): #is that syntax correct for range()? ----------
     text_area = label.Label(coord_font, text=point, color=0x470400) #adds text to label y-axis to display group
     point_label.append(text_area)  #subgroup for text scaling
     splash.append(point_label) #adds to splash
-    
+    '''
 while True:
-    pass
+    for i in range(len(count)):
+        altlist.append(i)
+        timelist.append(i)
+        line = Line(xPixel+3*timelist[len(timelist)-2], yPixel-18*altlist[len(altlist)-2], xPixel+3*timelist[len(timelist)-1], yPixel-18*altlist[len(timelist)-1], color=0xff5d00)
+        splash.append(line)
+        #The first two parameters center the circle around the data point at the end of the last graphed line
+        circle = Circle(xPixel+3*(timelist[len(timelist)-1]), yPixel-18*(altlist[len(altlist)-1]), 2, fill=0x0065ff, outline=0x0065ff)
+        splash.append(circle)
+        point_label = displayio.Group(scale=1, x=(xPixel+timelist[len(timelist)-1]-10), y=((yPixel-18*(altlist[len(altlist)-1])-8))) #sets font, size, and start position of message
+        point = f"({timelist[len(timelist)-1]}, {altlist[len(timelist)-1]})" #makes an f-string with showing the coordinates; these coordinates are defined by the last thing in timelist and altlist
+        text_area = label.Label(coord_font, text=point, color=0x470400) #adds coordinate text to display group
+        point_label.append(text_area)  #subgroup for text scaling
+        splash.append(point_label) #adds to splash
+    
+    if len(altlist) > 9:
+        break #breaks out of while True loop to stop graphing and avoid memory error after collecting the desired number of data points
+while True:
+    pass #enters new empty loop to freeze screen on final graph

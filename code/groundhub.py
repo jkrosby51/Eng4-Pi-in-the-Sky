@@ -21,6 +21,7 @@ import displayio
 import terminalio
 from adafruit_display_shapes.line import Line
 from adafruit_display_shapes.rect import Rect
+from adafruit_display_shapes.circle import Circle
 from adafruit_display_text import label
 from adafruit_bitmap_font import bitmap_font
 
@@ -125,11 +126,9 @@ while True:
     # If no packet was received during the timeout then None is returned.
     if packet is None:
         # Packet has not been received
-        LED.value = False
         print("Received nothing! Listening again...")
     else:
         # Received a packet!
-        LED.value = True
         # Print out the raw bytes of the packet:
         print("Received (raw bytes): {0}".format(packet)) # decodes to ASCII text and prints it
         # raw bytes are always recieved, must be converted to text format like ASCII to do string processing on data.
@@ -141,46 +140,50 @@ while True:
         rssi = rfm9x.last_rssi
         print("Received signal strength: {0} dB".format(rssi))
 
-    currentMeters = int(packet_text)
+        currentMeters = int(float(packet_text))
 
-    print(f"Altitude: {current_altitude} meters")
-    
-    if currentMeters >= 7:
-        descending = True #changes value of "descending" to indicate that the payload is now descending; only happens once it reaches its maximum altitude of seven meters
+        print(f"Altitude: {currentMeters} meters")
         
-    #Compares the current altitude value recieved by the LoRa with the last graphed altitude (note! the last graphed altitude is not the same as the last recieved altitude!) 
-    #If this value is greater than or equal to 1 and the payload is ascending, continue
-    if (currentMeters - lastMeters) >= 1 and descending == False:
-        msg_area.msg = upmessage_array[int(currentMeters/3)] #changes the message text displayed to appropriate one from array
+        if currentMeters >= 7:
+            descending = True #changes value of "descending" to indicate that the payload is now descending; only happens once it reaches its maximum altitude of seven meters
+            
+        #Compares the current altitude value recieved by the LoRa with the last graphed altitude (note! the last graphed altitude is not the same as the last recieved altitude!) 
+        #If this value is greater than or equal to 1 and the payload is ascending, continue
+        if (currentMeters - lastMeters) >= 1 and descending == False:
+            msg_area.msg = upmessage_array[int(currentMeters/3)] #changes the message text displayed to appropriate one from array
+            
+            altlist.append(currentMeters) #adds the current altitude to altlist
+            timelist.append(int(time.monotonic() - start_time)) #finds the current time elapsed by subtracting time.monotonic from the start time, and adds it to timelist
+            lastMeters = currentMeters #sets lastMeters equal to currentMeters, making it the new last graphed time
         
-        altlist.append(currentMeters) #adds the current altitude to altlist
-        timelist.append(time.monotonic() - start_time) #finds the current time elapsed by subtracting time.monotonic from the start time, and adds it to timelist
-        lastMeters = currentMeters #sets lastMeters equal to currentMeters, making it the new last graphed time
-    
-    #Only do this if the payload is descending! The distance between lastMeters and currentMeters is not needed here
-    if descending == True:
-        msg_area.msg = downmessage_array[0] #changes the message text displayed to appropriate one from array
-        time.sleep(2) #waits two seconds
-        msg_area.msg = downmessage_array[1] #changes the message text displayed to appropriate one from array
-        
-        altlist.append(currentMeters)  #adds the current altitude to altlist
-        timelist.append(time.monotonic() - start_time) #finds the current time elapsed by subtracting time.monotonic from the start time, and adds it to timelist
-        lastMeters = currentMeters #sets lastMeters equal to currentMeters, making it the new last graphed time
+        #Only do this if the payload is descending! The distance between lastMeters and currentMeters is not needed here
+        if descending == True:
+            msg_area.msg = downmessage_array[0] #changes the message text displayed to appropriate one from array
+            time.sleep(2) #waits two seconds
+            msg_area.msg = downmessage_array[1] #changes the message text displayed to appropriate one from array
+            
+            altlist.append(currentMeters)  #adds the current altitude to altlist
+            timelist.append(int(time.monotonic() - start_time)) #finds the current time elapsed by subtracting time.monotonic from the start time, and adds it to timelist
+            lastMeters = currentMeters #sets lastMeters equal to currentMeters, making it the new last graphed time
+            
+        if currentMeters != lastMeters:
+            #creates line to display data! First two parameters are the initial x- and y-positions of the line, and the second two are the final x- and y-positions! The final paramter sets the color of the line
+            #timelist[len(timelist)-2] ensures that the new line starts at the x-coordinate of the last point, and altlist[len(altlist-2)] ensures that the new line starts at the y-coordinate of the last point
+            #any time a part of timelist is called, it must be added to xPixel in order to create the line with respect to the origin of the graph, and whenever a part of altlist is called, it must be subtracted from yPixel for the same reason
+            #The second pair of x- and y-coordinates are written with timelist[i+1] and altlist[i+1] respectively to ensure that the line will end at the next data point
+            #timelist is multiplied by 3 and altlist is multiplied by 18 in order to scale the graph to be visible and large enough to distinguish individual data points
+            line = Line((xPixel+3*timelist[len(timelist)-2]), (yPixel-18*altlist[len(altlist)-2]), (xPixel+3*timelist[len(timelist)-1]), (yPixel-18*altlist[len(timelist)-1]), color=0xff5d00)
+            splash.append(line)
 
-    #creates line to display data! First two parameters are the initial x- and y-positions of the line, and the second two are the final x- and y-positions! The final paramter sets the color of the line
-    #timelist[len(timelist)-2] ensures that the new line starts at the x-coordinate of the last point, and altlist[len(altlist-2)] ensures that the new line starts at the y-coordinate of the last point
-    #any time a part of timelist is called, it must be added to xPixel in order to create the line with respect to the origin of the graph, and whenever a part of altlist is called, it must be subtracted from yPixel for the same reason
-    #The second pair of x- and y-coordinates are written with timelist[i+1] and altlist[i+1] respectively to ensure that the line will end at the next data point
-    #timelist is multiplied by 3 and altlist is multiplied by 18 in order to scale the graph to be visible and large enough to distinguish individual data points
-    line = Line(xPixel+3*timelist[len(timelist)-2], yPixel-18*altlist[len(altlist-2)], xPixel+3*timelist[(lentimelist-1)], yPixel-18*altlist[len(timelist-1)], color=0xff5d00)
-    splash.append(line)
-    
-    #The first two parameters center the circle around the data point at the end of the last graphed line
-    circle = Circle(xPixel+3*(timelist[len(timelist)-1]), yPixel-18*(altlist[len(altlist-1)]), 2, fill=0x0065ff, outline=0x0065ff)
-    splash.append(circle)
-    point_label = displayio.Group(scale=1, x=((xPixel+timelist[(lentimelist-1)])-10), y=((yPixel-18*(altlist[len(altlist-1)]))-8)) #sets font, size, and start position of message
-    point = f"({timelist[(lentimelist-1)]}, {altlist[len(timelist-1)]})" #makes an f-string with showing the coordinates; these coordinates are defined by the last thing in timelist and altlist
-    text_area = label.Label(coord_font, text=point, color=0x470400) #adds coordinate text to display group
-    point_label.append(text_area)  #subgroup for text scaling
-    splash.append(point_label) #adds to splash
+            #The first two parameters center the circle around the data point at the end of the last graphed line
+            circle = Circle(xPixel+3*(timelist[len(timelist)-1]), yPixel-18*(altlist[len(altlist)-1]), 2, fill=0x0065ff, outline=0x0065ff)
+            splash.append(circle)
+            point_label = displayio.Group(scale=1, x=(xPixel+timelist[len(timelist)-1]-10), y=(yPixel-18*(altlist[len(altlist)-1])-8)) #sets font, size, and start position of message
+            point = f"({timelist[len(timelist)-1]}, {altlist[len(timelist)-1]})" #makes an f-string with showing the coordinates; these coordinates are defined by the last thing in timelist and altlist
+            text_area = label.Label(coord_font, text=point, color=0x470400) #adds coordinate text to display group
+            point_label.append(text_area)  #subgroup for text scaling
+            splash.append(point_label) #adds to splash
+        
+        if len(altlist) > 8:
+            break #breaks out of the else statement to stop graphing and avoid memory error after collecting the desired number of data points
 
