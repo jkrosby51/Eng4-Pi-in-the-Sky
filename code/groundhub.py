@@ -115,7 +115,7 @@ msg_area = label.Label(terminalio.FONT, text=msg, color=0x470400) #adds text to 
 message_text.append(msg_area)  #subgroup for text scaling
 splash.append(message_text) #adds to splash
 
-descending = False
+descending = False #creates a variable that tells us whether the payload is ascending or descending; starts as False to indicate ascending
 
 print("Waiting for packets...")
 
@@ -146,22 +146,26 @@ while True:
     print(f"Altitude: {current_altitude} meters")
     
     if currentMeters >= 7:
-        descending = True
+        descending = True #changes value of "descending" to indicate that the payload is now descending; only happens once it reaches its maximum altitude of seven meters
         
+    #Compares the current altitude value recieved by the LoRa with the last graphed altitude (note! the last graphed altitude is not the same as the last recieved altitude!) 
+    #If this value is greater than or equal to 1 and the payload is ascending, continue
     if (currentMeters - lastMeters) >= 1 and descending == False:
         msg_area.msg = upmessage_array[int(currentMeters/3)] #changes the message text displayed to appropriate one from array
         
-        altlist.append(currentMeters)
-        timelist.append(time.monotonic() - start_time)
-        lastMeters = currentMeters
-        
+        altlist.append(currentMeters) #adds the current altitude to altlist
+        timelist.append(time.monotonic() - start_time) #finds the current time elapsed by subtracting time.monotonic from the start time, and adds it to timelist
+        lastMeters = currentMeters #sets lastMeters equal to currentMeters, making it the new last graphed time
+    
+    #Only do this if the payload is descending! The distance between lastMeters and currentMeters is not needed here
     if descending == True:
+        msg_area.msg = downmessage_array[0] #changes the message text displayed to appropriate one from array
+        time.sleep(2) #waits two seconds
         msg_area.msg = downmessage_array[1] #changes the message text displayed to appropriate one from array
-        time.sleep(2)
-        text_area.text = downmessage_array[1]
-        altlist.append(currentMeters)
-        timelist.append(time.monotonic() - start_time)
-        lastMeters = currentMeters
+        
+        altlist.append(currentMeters)  #adds the current altitude to altlist
+        timelist.append(time.monotonic() - start_time) #finds the current time elapsed by subtracting time.monotonic from the start time, and adds it to timelist
+        lastMeters = currentMeters #sets lastMeters equal to currentMeters, making it the new last graphed time
 
     #creates line to display data! First two parameters are the initial x- and y-positions of the line, and the second two are the final x- and y-positions! The final paramter sets the color of the line
     #timelist[len(timelist)-2] ensures that the new line starts at the x-coordinate of the last point, and altlist[len(altlist-2)] ensures that the new line starts at the y-coordinate of the last point
