@@ -128,7 +128,48 @@ The [Adafruit RFM9x LoRa CircuitPython guide](https://learn.adafruit.com/adafrui
 
 The groundhub had a bit more code on it than the payload, since it not only recieved the data transmitted by the payload, but also displayed it on a graph alongside a pre-set message for each altitude. For the LoRa reciever, the [Adafruit RFM9x LoRa CircuitPython guide](https://learn.adafruit.com/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts/circuitpython-for-rfm9x-lora) came in handy yet again for the correct wiring, setup, code, and details on how to use the RFM9x. 
 
-When it came to displaying the data, we knew that we wanted to utilize a graph that uptaded over the duration of the flight to do so. However, prior to this project, we had only worked with small OLED screens that would be insufficient forn our intended purposes. This is where the TFT screen came in. While this screen does have touchscreen capabilities, we wanted to use it purely for its size and color display, in order to display the data in a clean way. However, becuase neither of us had used a TFT screen before, it introduced its own unique learning curve and set of challenges.
+When it came to displaying the data, we knew that we wanted to utilize a graph that uptaded over the duration of the flight to do so. However, prior to this project, we had only worked with small OLED screens that would be insufficient forn our intended purposes. This is where the TFT screen came in. While this screen does have touchscreen capabilities, we wanted to use it purely for its size and color display, in order to display the data in a clean way. However, becuase neither of us had used a TFT screen before, it introduced its own unique learning curve and set of challenges. Initially, the problems arose from getting the screen to turn on in the first place. A great resource that was used throughout the process of coding the screen was the CircuitPython portion of the [Adafruit TFT screen guide](https://learn.adafruit.com/adafruit-2-8-tft-touch-shield-v2/circuitpython-displayio-quickstart), as well as the [displayio docs](https://docs.circuitpython.org/en/latest/shared-bindings/displayio/index.html#displayio)! Once the screen was up and running, setting up the axes of the graph was fairly simple. 
+
+After the axes were set up, we had to figure out a way to display our data as the payload sent new data. We created the variables ```altlist``` and ```timelist``` to keep track of the altitudes and their respictive times that would appear on the graph. At the end of the ```while True``` loop, the following code appears to add the newest point to the graph, as well as a line to connect it to the last data point for easier visualization of the flight path, and utilizes the aforementioned ```altlist`` and ```timelist```
+```python3
+    #creates line to display data! First two parameters are the initial x- and y-positions of the line, and the second two are the final x- and y-positions! The final paramter sets the color of the line
+    #timelist[len(timelist)-2] ensures that the new line starts at the x-coordinate of the last point, and altlist[len(altlist-2)] ensures that the new line starts at the y-coordinate of the last point
+    #any time a part of timelist is called, it must be added to xPixel in order to create the line with respect to the origin of the graph, and whenever a part of altlist is called, it must be subtracted from yPixel for     the same reason
+    #The second pair of x- and y-coordinates are written with timelist[i+1] and altlist[i+1] respectively to ensure that the line will end at the next data point
+    #timelist is multiplied by 3 and altlist is multiplied by 18 in order to scale the graph to be visible and large enough to distinguish individual data points
+    line = Line(xPixel+3*timelist[len(timelist)-2], yPixel-18*altlist[len(altlist-2)], xPixel+3*timelist[(lentimelist-1)], yPixel-18*altlist[len(timelist-1)], color=0xff5d00)
+    splash.append(line)
+    
+    #The first two parameters center the circle around the data point at the end of the last graphed line
+    circle = Circle(xPixel+3*(timelist[len(timelist)-1]), yPixel-18*(altlist[len(altlist-1)]), 2, fill=0x0065ff, outline=0x0065ff)
+    splash.append(circle)
+    point_label = displayio.Group(scale=1, x=((xPixel+timelist[(lentimelist-1)])-10), y=((yPixel-18*(altlist[len(altlist-1)]))-8)) #sets font, size, and start position of message
+    point = f"({timelist[(lentimelist-1)]}, {altlist[len(timelist-1)]})" #makes an f-string with showing the coordinates; these coordinates are defined by the last thing in timelist and altlist
+    text_area = label.Label(coord_font, text=point, color=0x470400) #adds coordinate text to display group
+    point_label.append(text_area)  #subgroup for text scaling
+    splash.append(point_label) #adds to splash
+```
+
+We knew from the start that we wanted the grounhub to play some kind of message that would correspond to altitudes certain distances apart. While we initially planned to do this using a soundboard and speaker, it stopped working in the final stretch of the project, forcing us to scrap the system. However, instead of doing away with the messages all together, we made it so that it would be written on the screen, and maintained the changing aspect of it. Both the speaker and the written form used the same base code, which is displayed below! 
+```python3
+if currentMeters >= 7:
+        descending = True
+        
+    if (currentMeters - lastMeters) >= 1 and descending == False:
+        msg_area.msg = upmessage_array[int(currentMeters/3)] #changes the message text displayed to appropriate one from array
+        
+        altlist.append(currentMeters)
+        timelist.append(time.monotonic() - start_time)
+        lastMeters = currentMeters
+        
+    if descending == True:
+        msg_area.msg = downmessage_array[1] #changes the message text displayed to appropriate one from array
+        time.sleep(2)
+        text_area.text = downmessage_array[1]
+        altlist.append(currentMeters)
+        timelist.append(time.monotonic() - start_time)
+        lastMeters = currentMeters
+```
 
 ## CAD
 
