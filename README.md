@@ -9,6 +9,7 @@
   - [Groundhub](#Groundhub-1) 
 - [Testing Footage](#Testing-Footage) 
   - [Drop Mechanism](#Drop-Mechanism)
+- [Reflection](#Reflection) 
 - [About Us](#About-Us)
 
 ## Planning
@@ -48,27 +49,29 @@
 | 5/19  | Finish analyzing data, final documentation, submit project             |
 
 
-### Parts and Uses
+### Materials
 
-| Part                 | Use |
-| -------------------- | --- |
-| Rasberry Pi Pico     |     |
-| Altimeter            |     |
-| Foam Padding         |     |
-| Helium Balloons      |     |
-| #4/40 Nuts and Bolts |     |
-| Acrylic              |     |
-| PLA                  |     |
-| LoRa Radio           |     |
-| Phone                |     |
-| Wires                |     |
-| Servos               |     |
-| Resistors            |     |
-| Switches             |     |
-| LEDs                 |     |
-| String               |     |
-| Powerboost           |     |
-| Battery              |     |
+* Rasberry Pi Pico
+* Metro M4 Airlift Lite
+* Prototyping Shield
+* MPL3115A2 Altimeter
+* RFM9x LoRa
+* Helium Balloons
+* #4-40 Nuts and Bolts
+* #1-72 Nuts and Bolts
+* Acrylic
+* PLA and ABS
+* Wires
+* String
+* Continuous Servo
+* Powerboost and Battery
+* String
+* 9V battery and Mount
+* Locking Power Button
+* Power Switch
+* 2.8" Adafruit TFT Capacitive Touch Shield
+* Male-Female Standoffs
+* Perforated Circuit Board
 
 ### Safety
 
@@ -101,7 +104,7 @@
 
 ### Payload
 
-The payload didn't have very much necessary code on it, only handling the collecting and sending of altitude data to the ground hub using an altimeter and LoRa transceiver, nd it controls the drop mechanic with a continuous mini servo so that it begins to fall when it reaches the defined maximum altitude. Due to the simplicity of the goals for the payload, the code is fairly straight forward and did not come with many issues. 
+The payload didn't have very much necessary code on it, only handling the collecting and sending of altitude data to the ground hub using an altimeter and LoRa transceiver, and it controls the drop mechanic with a continuous mini servo so that it begins to fall when it reaches the defined maximum altitude. Due to the simplicity of the goals for the payload, the code is fairly straight forward and did not come with many issues. 
 
 The most important section of the code to comment on is the use of the LoRa transceiver as it took some trial and error to get working.
 ```python3
@@ -123,6 +126,10 @@ The [Adafruit RFM9x LoRa CircuitPython guide](https://learn.adafruit.com/adafrui
 
 ### Groundhub
 
+The groundhub had a bit more code on it than the payload, since it not only recieved the data transmitted by the payload, but also displayed it on a graph alongside a pre-set message for each altitude. For the LoRa reciever, the [Adafruit RFM9x LoRa CircuitPython guide](https://learn.adafruit.com/adafruit-rfm69hcw-and-rfm96-rfm95-rfm98-lora-packet-padio-breakouts/circuitpython-for-rfm9x-lora) came in handy yet again for the correct wiring, setup, code, and details on how to use the RFM9x. 
+
+When it came to displaying the data, we knew that we wanted to utilize a graph that uptaded over the duration of the flight to do so. However, prior to this project, we had only worked with small OLED screens that would be insufficient forn our intended purposes. This is where the TFT screen came in. While this screen does have touchscreen capabilities, we wanted to use it purely for its size and color display, in order to display the data in a clean way. However, becuase neither of us had used a TFT screen before, it introduced its own unique learning curve and set of challenges.
+
 ## CAD
 
 ### Payload
@@ -143,6 +150,15 @@ Our first test of this mechanism, shown in the video below, was done without bal
 
 https://user-images.githubusercontent.com/56935262/236252742-cf3a1b80-0070-4444-83cb-54d3029338d6.mp4
 
+
+## Reflection
+Unfortunately, with a week left before the project's due date, we ran into several roadblocks. Our plan for launch was to use balloons to lift our payload into the air. Unfortunately, the sources we used to calculate how many balloons would be needed to the payload were incorrect, and we did not purchase nearly enough balloons to lift even an inch above the ground, let alone attain the desired altitude. Due to this occuring so close to the finish line, we were forced to scrap our original plan, instead attaching the altimiter and LoRa boards to a phone-operated drone. We were also unaware that the Pico sending data back to a groundhub was not sufficient for data collection, and we had to scramble to introduce an on-board data storage system to the Pico at the last minute. By the due date for launching, onboard storage was failing to properly write data, and the ground hub had it's own new issue. We unfortunately didn't have time to figure out the cause of those issues and so were unable to launch in time. Some of the main reasons for this was scope creep and poor prioritization, as we worked on non-essential parts of the project before finishing some essential parts which seemed easy to complete but turned out to cause more issues than anticipated. Some of these non-essential parts were also scrapped even after lots of time was put into it because issues came up which we weren't able to solve. Overall, to be more successful, we should have focused on making the flight and data collection work, and then add the fancy stuff afterwards.
+
+
+stuff to add to docs
+* wire diagram
+* finish reflection
+* finish ground hub cad + code doc
 
 ## To-Do
 
