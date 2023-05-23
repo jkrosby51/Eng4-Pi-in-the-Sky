@@ -22,6 +22,7 @@ import terminalio
 from adafruit_display_shapes.line import Line
 from adafruit_display_shapes.rect import Rect
 from adafruit_display_text import label
+from adafruit_bitmap_font import bitmap_font
 
 displayio.release_displays() #set up for screen by releasing all used pins for new display
 
@@ -45,6 +46,9 @@ color_palette[0] = 0xC3AFDB #Light Purple
 bg_sprite = displayio.TileGrid(color_bitmap, pixel_shader=color_palette, x=0, y=0)
 
 splash.append(bg_sprite)
+
+#makes a custom font to use for the coordinate labels
+coord_font = bitmap_font.load_font("/lib/JosefinSans-Bold-10.bdf")
 
 # Make the graph's axes
 hRect = Rect(40, 200, 240, 2, fill=0x470400)#sets start coordinates, width, height, and fill color of the line serving as the x-axis
@@ -79,7 +83,7 @@ RADIO_FREQ_MHZ = 915.0 # Frequency of the radio in Mhz. Must match yourm module!
 
 # Define pins connected to the chip, use these if wiring up the breakout according to the guide:
 LoRa_CS = digitalio.DigitalInOut(board.D3)
-LoRa_RESET = digitalio.DigitalInOut(board.D4)
+LoRa_RESET = digitalio.DigitalInOut(board.D5)
 # Initialze RFM radio
 rfm9x = adafruit_rfm9x.RFM9x(spi, LoRa_CS, LoRa_RESET, RADIO_FREQ_MHZ)
 
@@ -144,14 +148,14 @@ while True:
     if currentMeters >= 7:
         descending = True
         
-    if currentMeters - lastMeters >= 1 and descending = False:
+    if (currentMeters - lastMeters) >= 1 and descending == False:
         msg_area.msg = upmessage_array[int(currentMeters/3)] #changes the message text displayed to appropriate one from array
         
         altlist.append(currentMeters)
         timelist.append(time.monotonic() - start_time)
         lastMeters = currentMeters
         
-    if descending = True:
+    if descending == True:
         msg_area.msg = downmessage_array[1] #changes the message text displayed to appropriate one from array
         time.sleep(2)
         text_area.text = downmessage_array[1]
@@ -159,7 +163,20 @@ while True:
         timelist.append(time.monotonic() - start_time)
         lastMeters = currentMeters
 
-        line = Line(xPixel+timelist[len(timelist)-2]+, yPixel-altlist[i], xPixel+timelist[i+1], yPixel-altlist[i+1], color=0xFFFF00)
-        splash.append(line)
-    #display.show(splash) #sends display group to OLED screen
-    time.sleep(.2) #wait one second
+    #creates line to display data! First two parameters are the initial x- and y-positions of the line, and the second two are the final x- and y-positions! The final paramter sets the color of the line
+    #timelist[len(timelist)-2] ensures that the new line starts at the x-coordinate of the last point, and altlist[len(altlist-2)] ensures that the new line starts at the y-coordinate of the last point
+    #any time a part of timelist is called, it must be added to xPixel in order to create the line with respect to the origin of the graph, and whenever a part of altlist is called, it must be subtracted from yPixel for the same reason
+    #The second pair of x- and y-coordinates are written with timelist[i+1] and altlist[i+1] respectively to ensure that the line will end at the next data point
+    #timelist is multiplied by 3 and altlist is multiplied by 18 in order to scale the graph to be visible and large enough to distinguish individual data points
+    line = Line(xPixel+3*timelist[len(timelist)-2], yPixel-18*altlist[len(altlist-2)], xPixel+3*timelist[(lentimelist-1)], yPixel-18*altlist[len(timelist-1)], color=0xff5d00)
+    splash.append(line)
+    
+    #The first two parameters center the circle around the data point at the end of the last graphed line
+    circle = Circle(xPixel+3*(timelist[len(timelist)-1]), yPixel-18*(altlist[len(altlist-1)]), 2, fill=0x0065ff, outline=0x0065ff)
+    splash.append(circle)
+    point_label = displayio.Group(scale=1, x=((xPixel+timelist[(lentimelist-1)])-10), y=((yPixel-18*(altlist[len(altlist-1)]))-8)) #sets font, size, and start position of message
+    point = f"({timelist[(lentimelist-1)]}, {altlist[len(timelist-1)]})" #makes an f-string with showing the coordinates; these coordinates are defined by the last thing in timelist and altlist
+    text_area = label.Label(coord_font, text=point, color=0x470400) #adds coordinate text to display group
+    point_label.append(text_area)  #subgroup for text scaling
+    splash.append(point_label) #adds to splash
+
