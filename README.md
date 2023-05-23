@@ -136,48 +136,52 @@ When it came to displaying the data, we knew that we wanted to utilize a graph t
 
 After the axes were set up, we had to figure out a way to display our data as the payload sent new data. We created the variables ```altlist``` and ```timelist``` to keep track of the altitudes and their respictive times that would appear on the graph. At the end of the ```while True``` loop, the following code appears to add the newest point to the graph, as well as a line to connect it to the last data point for easier visualization of the flight path, and utilizes the aforementioned ```altlist``` and ```timelist```
 ```python3
-    #creates line to display data! First two parameters are the initial x- and y-positions of the line, and the second two are the final x- and y-positions! The final paramter sets the color of the line
-    #timelist[len(timelist)-2] ensures that the new line starts at the x-coordinate of the last point, and altlist[len(altlist-2)] ensures that the new line starts at the y-coordinate of the last point
-    #any time a part of timelist is called, it must be added to xPixel in order to create the line with respect to the origin of the graph, and whenever a part of altlist is called, it must be subtracted from yPixel for     the same reason
-    #The second pair of x- and y-coordinates are written with timelist[i+1] and altlist[i+1] respectively to ensure that the line will end at the next data point
-    #timelist is multiplied by 3 and altlist is multiplied by 18 in order to scale the graph to be visible and large enough to distinguish individual data points
-    line = Line(xPixel+3*timelist[len(timelist)-2], yPixel-18*altlist[len(altlist-2)], xPixel+3*timelist[(lentimelist-1)], yPixel-18*altlist[len(timelist-1)], color=0xff5d00)
-    splash.append(line)
-    
-    #The first two parameters center the circle around the data point at the end of the last graphed line
-    circle = Circle(xPixel+3*(timelist[len(timelist)-1]), yPixel-18*(altlist[len(altlist-1)]), 2, fill=0x0065ff, outline=0x0065ff)
-    splash.append(circle)
-    point_label = displayio.Group(scale=1, x=((xPixel+timelist[(lentimelist-1)])-10), y=((yPixel-18*(altlist[len(altlist-1)]))-8)) #sets font, size, and start position of message
-    point = f"({timelist[(lentimelist-1)]}, {altlist[len(timelist-1)]})" #makes an f-string with showing the coordinates; these coordinates are defined by the last thing in timelist and altlist
-    text_area = label.Label(coord_font, text=point, color=0x470400) #adds coordinate text to display group
-    point_label.append(text_area)  #subgroup for text scaling
-    splash.append(point_label) #adds to splash
+  if currentMeters != lastMeters:
+            #creates line to display data! First two parameters are the initial x- and y-positions of the line, and the second two are the final x- and y-positions! The final paramter sets the color of the line
+            #timelist[len(timelist)-2] ensures that the new line starts at the x-coordinate of the last point, and altlist[len(altlist-2)] ensures that the new line starts at the y-coordinate of the last point
+            #any time a part of timelist is called, it must be added to xPixel in order to create the line with respect to the origin of the graph, and whenever a part of altlist is called, it must be subtracted from yPixel for the same reason
+            #The second pair of x- and y-coordinates are written with timelist[i+1] and altlist[i+1] respectively to ensure that the line will end at the next data point
+            #timelist is multiplied by 3 and altlist is multiplied by 18 in order to scale the graph to be visible and large enough to distinguish individual data points
+            line = Line((xPixel+3*timelist[len(timelist)-2]), (yPixel-18*altlist[len(altlist)-2]), (xPixel+3*timelist[len(timelist)-1]), (yPixel-18*altlist[len(timelist)-1]), color=0xff5d00)
+            splash.append(line)
+
+            #The first two parameters center the circle around the data point at the end of the last graphed line
+            circle = Circle(xPixel+3*(timelist[len(timelist)-1]), yPixel-18*(altlist[len(altlist)-1]), 2, fill=0x0065ff, outline=0x0065ff)
+            splash.append(circle)
+            point_label = displayio.Group(scale=1, x=(xPixel+timelist[len(timelist)-1]-10), y=(yPixel-18*(altlist[len(altlist)-1])-8)) #sets font, size, and start position of message
+            point = f"({timelist[len(timelist)-1]}, {altlist[len(timelist)-1]})" #makes an f-string with showing the coordinates; these coordinates are defined by the last thing in timelist and altlist
+            text_area = label.Label(coord_font, text=point, color=0x470400) #adds coordinate text to display group
+            point_label.append(text_area)  #subgroup for text scaling
+            splash.append(point_label) #adds to splash
+            
+        if len(altlist) > 8:
+            break #breaks out of the else statement to stop graphing and avoid memory error after collecting the desired number of data points
 ```
 
 We knew from the start that we wanted the grounhub to play some kind of message that would correspond to altitudes certain distances apart. While we initially planned to do this using a soundboard and speaker, it stopped working in the final stretch of the project, forcing us to scrap the system. However, instead of doing away with the messages all together, we made it so that it would be written on the screen, and maintained the changing aspect of it. Both the speaker and the written form used the same base code, which is displayed below! 
 
 ```python3
 if currentMeters >= 7:
-        descending = True #changes value of "descending" to indicate that the payload is now descending; only happens once it reaches its maximum altitude of seven meters
+            descending = True #changes value of "descending" to indicate that the payload is now descending; only happens once it reaches its maximum altitude of seven meters
+            
+        #Compares the current altitude value recieved by the LoRa with the last graphed altitude (note! the last graphed altitude is not the same as the last recieved altitude!) 
+        #If this value is greater than or equal to 1 and the payload is ascending, continue
+        if (currentMeters - lastMeters) >= 1 and descending == False:
+            msg_area.msg = upmessage_array[int(currentMeters/3)] #changes the message text displayed to appropriate one from array
+            
+            altlist.append(currentMeters) #adds the current altitude to altlist
+            timelist.append(int(time.monotonic() - start_time)) #finds the current time elapsed by subtracting time.monotonic from the start time, and adds it to timelist
+            lastMeters = currentMeters #sets lastMeters equal to currentMeters, making it the new last graphed time
         
-    #Compares the current altitude value recieved by the LoRa with the last graphed altitude (note! the last graphed altitude is not the same as the last recieved altitude!) 
-    #If this value is greater than or equal to 1 and the payload is ascending, continue
-    if (currentMeters - lastMeters) >= 1 and descending == False:
-        msg_area.msg = upmessage_array[int(currentMeters/3)] #changes the message text displayed to appropriate one from array
-        
-        altlist.append(currentMeters) #adds the current altitude to altlist
-        timelist.append(time.monotonic() - start_time) #finds the current time elapsed by subtracting time.monotonic from the start time, and adds it to timelist
-        lastMeters = currentMeters #sets lastMeters equal to currentMeters, making it the new last graphed time
-    
-    #Only do this if the payload is descending! The distance between lastMeters and currentMeters is not needed here
-    if descending == True:
-        msg_area.msg = downmessage_array[0] #changes the message text displayed to appropriate one from array
-        time.sleep(2) #waits two seconds
-        msg_area.msg = downmessage_array[1] #changes the message text displayed to appropriate one from array
-        
-        altlist.append(currentMeters)  #adds the current altitude to altlist
-        timelist.append(time.monotonic() - start_time) #finds the current time elapsed by subtracting time.monotonic from the start time, and adds it to timelist
-        lastMeters = currentMeters #sets lastMeters equal to currentMeters, making it the new last graphed time
+        #Only do this if the payload is descending! The distance between lastMeters and currentMeters is not needed here
+        if descending == True:
+            msg_area.msg = downmessage_array[0] #changes the message text displayed to appropriate one from array
+            time.sleep(2) #waits two seconds
+            msg_area.msg = downmessage_array[1] #changes the message text displayed to appropriate one from array
+            
+            altlist.append(currentMeters)  #adds the current altitude to altlist
+            timelist.append(int(time.monotonic() - start_time)) #finds the current time elapsed by subtracting time.monotonic from the start time, and adds it to timelist
+            lastMeters = currentMeters #sets lastMeters equal to currentMeters, making it the new last graphed time
 ```
 
 The entirety of the commented code for the groundhub can be found [here](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/code/groundhub.py)
@@ -191,6 +195,8 @@ Designing the payload, we wanted something that could be opened easily, and that
 ![Payload Design](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/d2fedf610a3ad42f0f87dedb114dc86ccf7fb794/images/payloadCAD.png)
 
 ### Groundhub
+
+While the code for the groundhub was more complex, the CAD felt fairly simple. Because the groundhub was not meant to enter the air, it's weight, aerodynamics, and survivability did not influence our design. Instead, we went into the project with the idea of making a groundhub that looked like an old Gameboy, a design that we stuck with. We included fake buttons and a d-pad that are attached to springs that sit in a housing within the groundhub. However, one of these buttons was later replaced with a locking pushbutton that serves as the power button. Designing the casing itself went fairly smoothly, apart from our use of improper measurements of the TFT screen. Not only did we design the hole for the screen to be too small in both width and height, it was also made too deep, which made it so that we could not properly secure the front of the casing to the back plate; instead of lying flush as intended, the inner edge of the hole's lip banged against both our wires, as well as the screen, Metro, and prototyping shield. Due to the large amount of print material used to create the shell of the groundhub, we didn't want to print out a new one with just a few small changes made to it, so we took a dremel and sand paper to the inside edges instead and cut it down to size.
 
 ## Testing Footage
 
@@ -209,7 +215,8 @@ Unfortunately, with a week left before the project's due date, we ran into sever
 
 stuff to add to docs
 * wire diagram
-* finish ground hub cad doc
+* add images to groundhub cad doc
+* final photos
 
 ## To-Do
 
