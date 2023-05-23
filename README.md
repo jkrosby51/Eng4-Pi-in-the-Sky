@@ -151,25 +151,32 @@ After the axes were set up, we had to figure out a way to display our data as th
 ```
 
 We knew from the start that we wanted the grounhub to play some kind of message that would correspond to altitudes certain distances apart. While we initially planned to do this using a soundboard and speaker, it stopped working in the final stretch of the project, forcing us to scrap the system. However, instead of doing away with the messages all together, we made it so that it would be written on the screen, and maintained the changing aspect of it. Both the speaker and the written form used the same base code, which is displayed below! 
+
 ```python3
 if currentMeters >= 7:
-        descending = True
+        descending = True #changes value of "descending" to indicate that the payload is now descending; only happens once it reaches its maximum altitude of seven meters
         
+    #Compares the current altitude value recieved by the LoRa with the last graphed altitude (note! the last graphed altitude is not the same as the last recieved altitude!) 
+    #If this value is greater than or equal to 1 and the payload is ascending, continue
     if (currentMeters - lastMeters) >= 1 and descending == False:
         msg_area.msg = upmessage_array[int(currentMeters/3)] #changes the message text displayed to appropriate one from array
         
-        altlist.append(currentMeters)
-        timelist.append(time.monotonic() - start_time)
-        lastMeters = currentMeters
-        
+        altlist.append(currentMeters) #adds the current altitude to altlist
+        timelist.append(time.monotonic() - start_time) #finds the current time elapsed by subtracting time.monotonic from the start time, and adds it to timelist
+        lastMeters = currentMeters #sets lastMeters equal to currentMeters, making it the new last graphed time
+    
+    #Only do this if the payload is descending! The distance between lastMeters and currentMeters is not needed here
     if descending == True:
+        msg_area.msg = downmessage_array[0] #changes the message text displayed to appropriate one from array
+        time.sleep(2) #waits two seconds
         msg_area.msg = downmessage_array[1] #changes the message text displayed to appropriate one from array
-        time.sleep(2)
-        text_area.text = downmessage_array[1]
-        altlist.append(currentMeters)
-        timelist.append(time.monotonic() - start_time)
-        lastMeters = currentMeters
+        
+        altlist.append(currentMeters)  #adds the current altitude to altlist
+        timelist.append(time.monotonic() - start_time) #finds the current time elapsed by subtracting time.monotonic from the start time, and adds it to timelist
+        lastMeters = currentMeters #sets lastMeters equal to currentMeters, making it the new last graphed time
 ```
+
+The entirety of the commented code for the groundhub can be found [here](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/code/groundhub.py)
 
 ## CAD
 
@@ -199,7 +206,7 @@ Unfortunately, with a week left before the project's due date, we ran into sever
 stuff to add to docs
 * wire diagram
 * finish reflection
-* finish ground hub cad + code doc
+* finish ground hub cad doc
 
 ## To-Do
 
