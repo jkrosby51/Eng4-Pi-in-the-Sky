@@ -198,6 +198,8 @@ Designing the payload, we wanted something that could be opened easily, and that
 
 While the code for the groundhub was more complex, the CAD felt fairly simple. Because the groundhub was not meant to enter the air, it's weight, aerodynamics, and survivability did not influence our design. Instead, we went into the project with the idea of making a groundhub that looked like an old Gameboy, a design that we stuck with. We included fake buttons and a d-pad that are attached to springs that sit in a housing within the groundhub. However, one of these buttons was later replaced with a locking pushbutton that serves as the power button. Designing the casing itself went fairly smoothly, apart from our use of improper measurements of the TFT screen. Not only did we design the hole for the screen to be too small in both width and height, it was also made too deep, which made it so that we could not properly secure the front of the casing to the back plate; instead of lying flush as intended, the inner edge of the hole's lip banged against both our wires, as well as the screen, Metro, and prototyping shield. Due to the large amount of print material used to create the shell of the groundhub, we didn't want to print out a new one with just a few small changes made to it, so we took a dremel and sand paper to the inside edges instead and cut it down to size.
 
+![Groundhub Design](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/groundhubCAD.png)
+
 ## Testing Footage
 
 ### Drop Mechanism
