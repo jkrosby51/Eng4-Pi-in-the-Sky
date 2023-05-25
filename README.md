@@ -235,9 +235,13 @@ Unfortunately, with a week left before the project's due date, we ran into sever
 
 <img src="https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/PayloadImage2.jpg" width="582" height="487">
 
-stuff to add to docs
-* wire diagram
-* final photos
+### Groundhub
+
+<img src="https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/groundhub_1.jpg?raw=true" width="254" height="327">
+
+<img src="https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/groundhub_2.jpg?raw=true" width="300" height="347">
+
+<img src="https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/groundhub_3.jpg?raw=true" width="419" height="576">
 
 ## To-Do
 
