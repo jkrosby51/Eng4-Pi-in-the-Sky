@@ -229,6 +229,12 @@ Unfortunately, with a week left before the project's due date, we ran into sever
 
 ## Final Pictures
 
+### Payload
+
+<img src="https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/PayloadImage1.jpg" width="875" height="975">
+
+<img src="https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/PayloadImage2.jpg" width="816" height="975">
+
 stuff to add to docs
 * wire diagram
 * final photos
