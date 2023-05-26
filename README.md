@@ -105,6 +105,7 @@
 - [more turret audios](https://github.com/sourcesounds/portal/tree/master/sound/npc/turret_floor)
 - [even more turret audios](https://github.com/sourcesounds/portal2/tree/master/sound/npc/turret)
 - [still more turret audios](https://github.com/sourcesounds/portal2/tree/master/sound/npc/turret_floor)
+- [SPI guide](https://www.analog.com/en/analog-dialogue/articles/introduction-to-spi-interface.html)
 
 
 ## Code
