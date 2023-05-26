@@ -246,10 +246,11 @@ Unfortunately, with a week left before the project's due date, we ran into sever
 
 ### Launch Videos
 
-
 https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/assets/56935262/bc59bd21-ec94-4db6-8dbf-58fa19205fce
 
+### Launch Data
 
+![Launch Data](https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/launch%20data.png?raw=true)
 
 ## About Us
 
