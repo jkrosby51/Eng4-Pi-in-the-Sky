@@ -244,12 +244,6 @@ Unfortunately, with a week left before the project's due date, we ran into sever
 
 <img src="https://github.com/jkrosby51/Eng4-Pi-in-the-Sky/blob/main/images/groundhub_3.jpg?raw=true" width="419" height="576">
 
-## To-Do
-
-* document
-* finish groubhub assembly
-* final launch
-
 ## About Us
 
 ### **Josie Muss**
